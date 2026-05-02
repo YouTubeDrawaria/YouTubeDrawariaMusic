@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Drawaria.online ▶ Profile</title>
+    
+    <meta name="description" content="Explore thousands of indexed profiles, historical art archives and hidden secrets. Developed by YouTubeDrawaria.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="YouTubeDrawaria">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <script>
+        (function() {
+            var test = document.createElement('span');
+            test.className = 'fa';
+            test.style.display = 'none';
+            document.head.appendChild(test);
+            var isLoaded = window.getComputedStyle(test).fontFamily.indexOf('Font Awesome') !== -1;
+            if (!isLoaded) {
+                document.write('<link rel="stylesheet" href="all.css">');
+            }
+            test.remove();
+        })();
+    </script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script>
+        (function() {
+            var test = document.createElement('div');
+            test.className = 'hidden d-none';
+            document.head.appendChild(test);
+            var isLoaded = window.getComputedStyle(test).display === 'none';
+            if (!isLoaded) {
+                document.write('<link rel="stylesheet" href="boostrap-style.css">');
+            }
+            test.remove();
+        })();
+    </script>
+
+    <link rel="stylesheet" href="primary.css">
+    <link rel="stylesheet" href="avataranimations.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="jquery.min.js"><\/script>')</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script>window.Popper || document.write('<script src="popper.min.js"><\/script>')</script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script>if(typeof($.fn.modal) === 'undefined') { document.write('<script src="bootstrap.min.js"><\/script>'); }</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    
+	
+    <meta name="image" content="siteimage.jpg">
+    <meta itemprop="name" content="Drawaria.online Wiki">
+    <meta itemprop="description"  content="The community wiki for Drawaria.online. Explore player profiles, gallery history, social data and more.">
+    <meta itemprop="image" content="siteimage.jpg">
+    <meta name="og:title" content="Drawaria.online Wiki">
+    <meta name="og:description"  content="The community wiki for Drawaria.online. Explore player profiles, gallery history, social data and more.">
+    <meta name="og:image" content="siteimage.jpg">
+    
+    <style>
+        /* =========================================
+           SISTEMA DE WORKER KAWAII
+           ========================================= */
+        #setup-view {
+          display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+          background: url('pattern.png') repeat center, radial-gradient(circle, rgba(0, 90, 187, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%);
+          z-index: 1000000; flex-direction: column; justify-content: center; align-items: center; font-family: 'Comic Sans MS', sans-serif;
+        }
+        .setup-card { background: #FDFDFD; border: 6px solid #8B5A2B; border-radius: 35px; padding: 30px; width: 90%; max-width: 520px; text-align: center; box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.15); }
+        .worker-image-container { margin: 10px auto 20px auto; display: flex; justify-content: center; align-items: center; }
+        .worker-img { max-width: 100%; height: auto; display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); }
+        .setup-title { font-size: 24px; font-weight: 900; color: #FF9800; margin-bottom: 15px; -webkit-text-stroke: 1.5px #8B5A2B; text-transform: uppercase; }
+        .system-desc { color: #555; font-size: 13px; margin: 5px 0 20px 0; font-family: sans-serif; }
+        .progress-container { background: #EEE; border: 3px solid #8B5A2B; border-radius: 50px; height: 28px; overflow: hidden; margin-bottom: 10px; }
+        #progress-fill { background: #00BCD4; width: 0%; height: 100%; color: white; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: width 0.4s ease; }
+        #status-text { font-weight: bold; color: #8B5A2B; font-size: 14px; margin-bottom: 20px; font-family: sans-serif;}
+        #btn-worker { background: #FF9800; color: white; border: 4px solid #8B5A2B; padding: 12px 35px; border-radius: 50px; cursor: pointer; font-weight: 900; font-size: 16px; transition: 0.2s; box-shadow: 0 5px 0px #8B5A2B; }
+        #btn-worker:hover { background: #FFA726; transform: translateY(-2px); box-shadow: 0 7px 0px #8B5A2B; }
+        #btn-worker:active { transform: translateY(3px); box-shadow: 0 2px 0px #8B5A2B; }
+
+        /* =========================================
+           ESTILOS NAVBAR Y BUSCADOR
+           ========================================= */
+        .sitemenu .nav-link { color: #ffffff !important; }
+        .search-box-wrapper { display: inline-flex; align-items: center; position: relative; width: 100%; max-width: 400px; }
+        .nav-search-container { position: relative; width: 100%; }
+        #nav-search-input { width: 100%; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 5px 35px 5px 15px; color: white; font-size: 0.9em; outline: none; transition: all 0.2s; }
+        #nav-search-input:focus { background: rgba(255, 255, 255, 0.25); border-color: #00BCD4; box-shadow: 0 0 5px rgba(0, 188, 212, 0.5); }
+        .search-lupa { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.6); pointer-events: none; }
+        #search-clear-trash { margin-left: 10px; color: #a0cfff; cursor: pointer; font-size: 1.1em; transition: color 0.2s; }
+        #search-clear-trash:hover { color: #ff5252 !important; }
+        #search-results-dropdown { position: absolute; top: 100%; left: 0; width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 5px; z-index: 10000; max-height: 250px; overflow-y: auto; display: none; text-align: left; }
+        .search-res-item { padding: 8px 12px; border-bottom: 1px solid #222; cursor: pointer; display: flex; align-items: center; color: #ccc; }
+        .search-res-item:hover { background: #252525; color: white; }
+
+        /* =========================================
+           ESTILOS HEADER DEL PERFIL Y STATS
+           ========================================= */
+        .uidlinks, .uidlinks > a { color: #a0cfff; font-size: 0.8em; padding: 0 0.2em; text-decoration: none; }
+        .uidlinks > a:hover, .uidlinks-active { color: #ffffff !important; }
+        #headermenu { position: absolute; float: right; top: -0.1em; right: -0.09em; }
+
+        #playstats { background: white; padding-top: 0.1px; }
+        #playstats tr { border-bottom: 1px dotted #cccccc; }
+        #playstats td:not(:first-child) { text-align: right; }
+        #exp { font-size: 1.2em; margin-top: 1em; }
+        #exp-val { font-weight: bold; }
+        #level { display: flex; justify-content: center; align-items: center; }
+        svg { width: 10em; height: 10em; }
+        #levelval { font-size: 2em; font-weight: bold; }
+        #levelbar { background: #e1e1e1; border-radius: 100%; box-shadow: inset 0 0 1px #00BCD4; }
+        
+        #tokens { display: flex; justify-content: center; width: 100%; height: 60%; flex-wrap: wrap; padding: 0 6em; }
+        #tokens > table { width: 100%; height: 100%; }
+        #tokens tbody { vertical-align: text-bottom; }
+        #tokens i { padding-left: 0.5em; font-family: "Font Awesome 5 Free"; font-weight: 900; font-style: normal; }
+        #tokens i::before { margin-right: 0.5em; color: #9397b3; background: #f5f5f5; padding: 0.2em; border-radius: 0.2em; box-shadow: 0 0 2px #8c8c8c; }
+
+        /* =========================================
+           ESTILOS OSINT FORENSES
+           ========================================= */
+        .forensic-panel { background: white; border-radius: 8px; padding: 1.5em; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-top: 20px; width: 100%; animation: fadeIn 0.4s ease-in-out; }
+        .forensic-header { text-align:center; font-weight:900; margin-bottom:15px; font-size: 1.1em; text-transform:uppercase; letter-spacing:1px; border-bottom: 2px solid; padding-bottom: 5px; }
+        .social-node { background: #fdfdfd; border: 1px solid #e0e0e0; border-radius: 6px; padding: 6px 10px; margin-bottom: 8px; display: flex; justify-content: space-between; font-size: 0.85em; align-items: center; transition: 0.2s; cursor: pointer; color: #333; text-decoration: none !important;}
+        .social-node:hover { background: #e8f5e9; border-color: #81c784; transform: translateX(3px); text-decoration: none;}
+        .node-name { font-weight: 900; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%; display: flex; align-items: center; }
+        .clan-tag { background: #e3f2fd; color: #0d47a1; padding: 2px 6px; border-radius: 4px; font-size: 0.75em; border: 1px solid #90caf9; font-weight: bold; margin-left: 5px; text-overflow: ellipsis; overflow: hidden; max-width: 100px; white-space: nowrap;}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* MOD PANEL */
+        #forensic-mod-panel { background-color: #7FBEFF; padding: 22px 15px; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; margin-top: 20px; margin-bottom: 20px; border-radius: 4px; display: flex; flex-direction: column; gap: 12px; animation: fadeIn 0.4s ease-in-out; }
+        .action-bar { display: flex; justify-content: space-between; align-items: center; transform: translateY(-2px); }
+        .left-actions { display: flex; gap: 8px; }
+        .btn-forensic { padding: 6px 12px; cursor: pointer; font-size: 13px; border: 1px solid transparent; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+        .btn-white { background-color: #FFFFFF; color: #212529; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .btn-blue { background-color: #0583F2; color: #FFFFFF; }
+        .btn-forensic:disabled { background-color: rgba(255, 255, 255, 0.4) !important; color: #738CA5 !important; cursor: not-allowed; }
+        .metadata-text { font-size: 15px; color: #FFFFFF; opacity: 0.9; margin-top: 5px; }
+    </style>
+</head>
+
+<body>
+
+<div id="setup-view" style="display: none;">
+    <div class="setup-card">
+        <h2 class="setup-title">Full Database Missing</h2>
+        <div class="worker-image-container">
+            <img src="august-guy.png" alt="Worker" class="worker-img">
+        </div>
+        <p class="system-desc"> We need to process social relationships and deep forensics stats.</p>
+        <div class="progress-container"><div id="progress-fill">0%</div></div>
+        <p id="status-text">Ready to extract...</p>
+        <button id="btn-worker">INSTALL DATABASE</button>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top sitemenu" style="background: #00000059; box-shadow: 0 5px 9px 0px rgba(0,0,0,0.5);">
+    <a class="navbar-brand" href="search.html"><img src="wiki2.png" width="246" height="30" style="margin-bottom: 5px;"></a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item"><a class="nav-link" href="scoreboards.html">Scoreboards</a></li>
+            <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+        </ul>
+        <div class="row no-gutters" style="display: flex; flex-wrap: wrap; flex: 1; justify-content: center;">
+            <div class="search-box-wrapper">
+                <div class="nav-search-container">
+                    <input type="text" id="nav-search-input" placeholder="Search Name or UID..." autocomplete="off">
+                    <i class="fas fa-search search-lupa"></i>
+                    <div id="search-results-dropdown"></div>
+                </div>
+                <i class="fas fa-trash-alt" id="search-clear-trash" title="Clear search"></i>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div style="margin-top: 6em;"></div>
+<div class="container" style="margin-bottom: 20px; color:#000000;">
+    <div style="padding: 2px; background: #005abb6e;" id="dynamic-profile-header"></div>
+</div>
+
+<div class="container">
+  <div class="row justify-content-center no-gutters" style="background: white; border-radius: 0.2em; padding: 1em; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <div class="col" style="text-align: center; margin: auto;">
+        <div id="level">
+            <div style="position: relative;">
+                <div style="position: absolute; top: 0.5em; left: 0.5em; width: 9em; height: 9em; display: flex; justify-content: center; align-items: center; background: #f0f9ff; border-radius: 100%; box-shadow: 0 0 3px #00BCD4;">
+                    <div><div style="color: #9E9E9E; font-size: 1.2em;">Level</div><div id="levelval">-</div></div>
+                </div>
+                <div id="levelbar"></div>
+            </div>
+        </div>
+        <div id="exp"><div style="color: #9E9E9E;">Experience</div><div id="exp-val">0</div></div>
+    </div>
+  
+    <div class="col-md-3">
+        <div id="playstats">
+            <div style="text-align: center; color: #9E9E9E;">Pictionary / Guessing Stats</div>
+            <table class="table table-borderless table-sm">
+                <tbody id="pictionary-stats-body">
+                    <tr><td>Total score:</td><td id="stat-score">0</td></tr>
+                    <tr><td>Wins:</td><td id="stat-wins">0</td></tr>
+                    <tr><td>Stars received:</td><td id="stat-stars">0</td></tr>
+                    <tr><td>Guessed words:</td><td id="stat-guessed">0</td></tr>
+                    <tr><td>Matches played:</td><td id="stat-matches">0</td></tr>
+                    <tr><td>Words drawed:</td><td id="stat-drawed">0</td></tr>
+                    <tr><td>Chars typed in chat:</td><td id="stat-chars">0</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="col">
+        <div id="tokens">
+            <div style="text-align: center; color: #9E9E9E; margin-bottom: 0.5em;">Playground Accolades</div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td><i data-tokenid="0" class="fas fa-thumbs-up">0</i></td>
+                        <td><i data-tokenid="1" class="fas fa-heart">0</i></td>
+                        <td><i data-tokenid="2" class="fas fa-paint-brush">0</i></td>
+                    </tr>
+                    <tr>
+                        <td><i data-tokenid="3" class="fas fa-cocktail">0</i></td>
+                        <td><i data-tokenid="4" class="far fa-hand-peace">0</i></td>
+                        <td><i data-tokenid="5" class="fas fa-feather-alt">0</i></td>
+                    </tr>
+                    <tr>
+                        <td><i data-tokenid="6" class="fas fa-trophy">0</i></td>
+                        <td><i data-tokenid="7" class="fas fa-mug-hot">0</i></td>
+                        <td><i data-tokenid="8" class="fas fa-gift">0</i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" id="forensic-expansion-zone" style="margin-top: 1em; margin-bottom: 3em;"></div>
+
+<script>
+// Base de Datos Estricta: Muestra el Worker si no hay DB
+window.addEventListener('DOMContentLoaded', () => {
+    const checkDB = indexedDB.open("DrawariaLiteDB", 2);
+    
+    checkDB.onupgradeneeded = e => {
+    const db = e.target.result;
+    // Tabla para perfiles generales y búsqueda
+    if (!db.objectStoreNames.contains('profiles')) {
+        db.createObjectStore("profiles", { keyPath: "uid" });
+    }
+    // Tabla para relaciones sociales
+    if (!db.objectStoreNames.contains('social')) {
+        db.createObjectStore("social", { keyPath: "owner_uid" });
+    }
+    // Tabla para etiquetas forenses
+    if (!db.objectStoreNames.contains('sigint_tags')) {
+        db.createObjectStore("sigint_tags", { keyPath: "word" });
+    }
+};
+    
+    checkDB.onsuccess = e => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('profiles')) {
+            document.getElementById('setup-view').style.display = 'flex';
+            return;
+        }
+        
+        const transaction = db.transaction(['profiles'], 'readonly');
+        const store = transaction.objectStore('profiles');
+        const countReq = store.count();
+
+        countReq.onsuccess = () => {
+            if (countReq.result === 0) {
+                document.getElementById('setup-view').style.display = 'flex';
+            }
+        };
+    };
+});
+
+/* LÓGICA DEL WORKER DE IMPORTACIÓN */
+const workerCode = `
+self.onmessage = async function(e) {
+    const { profiles, social } = e.data;
+    const DB_NAME = "DrawariaLiteDB";
+    const request = indexedDB.open(DB_NAME, 2);
+
+    request.onsuccess = function(event) {
+        const db = event.target.result;
+        
+        const pTx = db.transaction("profiles", "readwrite");
+        const pStore = pTx.objectStore("profiles");
+        profiles.forEach((p, i) => {
+            pStore.put(p);
+            if (i % 2000 === 0) self.postMessage({ status: "Profiles: " + Math.round((i/profiles.length)*100) + "%" });
+        });
+
+        pTx.oncomplete = () => {
+            const sTx = db.transaction("social", "readwrite");
+            const sStore = sTx.objectStore("social");
+            social.forEach((s, i) => {
+                sStore.put(s);
+                if (i % 2000 === 0) self.postMessage({ status: "Social: " + Math.round((i/social.length)*100) + "%" });
+            });
+            sTx.oncomplete = () => {
+                db.close();
+                self.postMessage({ status: "All complete!", complete: true });
+            };
+        };
+    };
+};`;
+
+document.getElementById('btn-worker').onclick = async function() {
+    const btn = this; const status = document.getElementById('status-text'); const fill = document.getElementById('progress-fill');
+    btn.disabled = true;
+    const loadScript = (src) => new Promise(res => { const s = document.createElement('script'); s.src = src; s.onload = res; document.head.appendChild(s); });
+    try {
+        status.innerText = "Downloading profiles..."; fill.style.width = "15%"; fill.innerText = "15%";
+        await loadScript('relational_profiles_v5.js'); fill.style.width = "35%"; fill.innerText = "35%";
+        await loadScript('relational_social_v5.js'); fill.style.width = "50%"; fill.innerText = "50%";
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        const workerUrl = URL.createObjectURL(blob);
+        const worker = new Worker(workerUrl);
+        worker.postMessage({ profiles: window.relationalProfiles, social: window.relationalSocialMaps });
+        worker.onmessage = (e) => {
+            if (e.data.complete) { fill.style.width = "100%"; fill.innerText="100%"; status.innerText = "Success! Reloading..."; setTimeout(() => location.reload(), 1200); }
+            else { const match = e.data.status.match(/(\d+)%/); if (match) { let percent = 50 + (parseInt(match[1]) / 2); fill.style.width = percent + "%"; fill.innerText=Math.round(percent)+"%"; } status.innerText = e.data.status; }
+        };
+    } catch (err) { status.innerText = "Error: " + err.message; btn.disabled = false; }
+};
+
+/* LÓGICA PRINCIPAL DEL PERFIL Y HEADER */
+const DRAW_LEVELVAL = (exp) => {
+    const level = Math.floor(Math.sqrt(exp / 169));
+    const currentLevelExp = 169 * Math.pow(level, 2);
+    const nextLevelExp = 169 * Math.pow(level + 1, 2);
+    let progress = (nextLevelExp !== currentLevelExp) ? ((exp - currentLevelExp) / (nextLevelExp - currentLevelExp) * 100).toFixed(2) : 0;
+    return { level, levelval: parseFloat(progress) };
+};
+
+window.currentPlayerStats = null;
+window.currentPlayerName = null;
+window.currentPlayerProfile = null;
+
+$(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetUid = urlParams.get('uid');
+    if (!targetUid) return;
+
+    const request = indexedDB.open("DrawariaLiteDB", 2);
+    request.onsuccess = (e) => {
+        const db = e.target.result;
+        try {
+            const tx = db.transaction("profiles", "readonly");
+            const getReq = tx.objectStore("profiles").get(targetUid);
+
+            getReq.onsuccess = () => {
+                const profile = getReq.result;
+                if (profile) {
+                    window.currentPlayerStats = profile.stats || {};
+                    window.currentPlayerProfile = profile;
+
+                    const searchedName = urlParams.get('search_name');
+                    let defaultDisplay = profile.name || "Unknown";
+                    
+                    if (searchedName && (searchedName === profile.new_name || searchedName === profile.name)) {
+                        defaultDisplay = searchedName;
+                    } else if (profile.new_name) {
+                        defaultDisplay = profile.new_name;
+                    }
+                    
+                    window.currentPlayerName = defaultDisplay;
+
+                    const hasDualIdentity = profile.new_name && profile.name && (profile.new_name !== profile.name);
+                    const alterUsernameBtnHTML = hasDualIdentity ? `<a class="dropdown-item" id="menu-alter-username" href="#" style="font-weight:normal; padding: .25rem 1.5rem; font-size:0.9em;"><i class="fas fa-exchange-alt" style="color:#6c757d!important;"></i><span style="color:#212529!important;">  Alter Username</span></a>` : "";
+
+                    document.getElementById('dynamic-profile-header').innerHTML = `
+        <h1 style="text-align: center; color: white; margin: 0; background: #ffffff52; padding: 10px; border-radius: 3px;">
+            <div style="position: relative;">
+                <a href="profile.html?uid=${profile.uid}" style="color: #ffffff; text-decoration:none;">
+                    <img class="turnresults-avatar" src="avatar/${profile.uid}.webp" style="padding: 1px; box-shadow: 0px 0 3px 0px #3F51B5;" onerror="this.src='user.png';"><span id="header-display-name">${defaultDisplay}</span>
+                </a>
+                                <div class="dropdown dropleft" id="headermenu">
+                                    <button class="btn btn-outline-light btn-sm" type="button" data-toggle="dropdown" style="opacity: 0.7;"><i class="fas fa-ellipsis-v"></i></button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" id="copy-uid-btn" href="#"><i class="fas fa-copy text-secondary"></i> Copy User ID</a>
+                                        ${alterUsernameBtnHTML}
+                                        <div class="dropdown-divider"></div>
+                                        <h6 class="dropdown-header text-muted" style="font-size:0.7em;">More user info</h6>
+                                        <a class="dropdown-item" id="menu-forensics-uid" href="#" style="color:#00BCD4; font-weight:bold; font-size:0.9em;"><i class="fas fa-fingerprint"></i> UID Info</a>
+                                        <a class="dropdown-item" id="menu-forensics-behavior" href="#" style="color:#ff9800; font-weight:bold; font-size:0.9em;"><i class="fas fa-brain"></i> User extras</a>
+                                        <a class="dropdown-item" id="menu-forensics-social" href="#" style="color:#4CAF50; font-weight:bold; font-size:0.9em;"><i class="fas fa-project-diagram"></i> Connections</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="uidlinks mt-2">
+                                <a href="profile.html?uid=${profile.uid}" class="uidlinks-active">Profile</a>
+                                <a href="friends.html?uid=${profile.uid}">Friends</a>
+				<a href="Search.html" target="_blank" rel="noopener noreferrer">Search</a>
+                            </div>
+                        </h1>`;
+
+                    const stats = profile.stats || {};
+                    $("#stat-score").text(stats["Total score"] || "0");
+                    $("#stat-wins").text(stats["Wins"] || "0");
+                    $("#stat-stars").text(stats["Stars received"] || "0");
+                    $("#stat-guessed").text(stats["Guessed words"] || "0");
+                    $("#stat-matches").text(stats["Matches played"] || "0");
+                    $("#stat-drawed").text(stats["Words drawed"] || "0");
+                    $("#stat-chars").text(stats["Chars typed in chat"] || "0");
+
+                    const accolades = profile.accolades || {};
+                    const updateTokens = () => {
+                        $("#tokens i").each(function() {
+                            const $icon = $(this); const tokenId = $icon.data("tokenid");
+                            $icon.text(accolades[tokenId] || "0");
+                        });
+                    };
+                    updateTokens();
+
+                    const exp = parseInt(profile.exp || 0); $("#exp-val").text(exp);
+                    const levelData = DRAW_LEVELVAL(exp); $("#levelval").text(levelData.level);
+                    let angle = (levelData.levelval / 100) * Math.PI * 2 || 0.0001;
+                    $("#levelbar").html(`<svg viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg"><path d="M 0.5 0.025 A 0.475 0.475 0 ${angle > Math.PI ? "1" : "0" } 1 ${Math.sin(angle) * 0.475 + 0.5} ${Math.cos(Math.PI - angle) * 0.475 + 0.5}" stroke="#673ab7" fill="none" stroke-width="0.05" stroke-linecap="round" /></svg>`);
+                }
+            };
+        } catch(err){}
+    };
+});
+
+/* =========================================
+   MÓDULOS DE FORENSES & NAVBAR BÚSQUEDA
+   ========================================= */
+
+function decodeUUIDv1Offline(pureUUID) {
+    try {
+        const parts = pureUUID.split('-');
+        if (parts.length === 5) {
+            let time_hi = parts[2].substring(1);
+            let time_mid = parts[1];
+            let time_low = parts[0];
+            let timestamp = parseInt(time_hi + time_mid + time_low, 16);
+            const creationDate = new Date(Math.floor((timestamp - 122192928000000000) / 10000));
+            
+            if (!isNaN(creationDate.getTime())) {
+                const now = new Date();
+                const totalDays = Math.floor((now - creationDate) / (1000 * 60 * 60 * 24));
+                let years = now.getFullYear() - creationDate.getFullYear();
+                let months = now.getMonth() - creationDate.getMonth();
+                let days = now.getDate() - creationDate.getDate();
+
+                if (days < 0) { months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+                if (months < 0) { years--; months += 12; }
+                
+                let trustFactor = "🔵 NORMAL"; let colorTF = "#212121";
+                if (totalDays < 1) { trustFactor = "🔴 CRITICAL"; colorTF = "#f44336"; }
+                else if (totalDays < 30) { trustFactor = "🟡 MEDIUM"; colorTF = "#ff9800"; }
+                else if (totalDays >= 365) { trustFactor = "🟢 HIGH"; colorTF = "#4caf50"; }
+
+                const hoursUTC = creationDate.getUTCHours();
+                let phase = hoursUTC < 6 ? "Madrugada UTC" : hoursUTC < 12 ? "Mañana UTC" : hoursUTC < 18 ? "Tarde UTC" : "Noche UTC";
+                let serverNode = parts[4];
+                let isSpoof = (parseInt(serverNode.substring(0, 2), 16) & 0x01) === 1;
+
+                return {
+                    "Profile Type": "Registered User", "Trust Factor": { text: trustFactor, color: colorTF },
+                    "Generation": creationDate.getFullYear() <= 2020 ? "Alpha Generation 👑" : "Newcomer 🔰",
+                    "Account Age": `${years}y, ${months}m and ${days}d`, "Created At": creationDate.toLocaleString(),
+                    "Creation Phase": `${hoursUTC}:00 (${phase})`, "Server Node": serverNode,
+                    "Hardware Origin": "Physical/Virtual MAC", "Privacy Status": isSpoof ? "🛡️ Oculto/Spoof" : "⚠️ Físico Expuesto",
+                    "Seq. Clock": parts[3], "Official URN": `urn:uuid:${pureUUID}`
+                };
+            }
+        }
+    } catch (e) {} return null;
+}
+
+function buildTwoColumnForensics(report) {
+    const tdLabel = "color: #757575; padding: 4px 0; font-size: 0.85em; font-weight: 600; white-space: nowrap;";
+    const tdVal = "padding: 4px 0; font-size: 0.85em; font-weight: 500; text-align: right;";
+    const tdValSmall = "padding: 4px 0; font-size: 0.73em; font-weight: 500; text-align: right; word-break: break-all;";
+    return `
+        <div class="row no-gutters w-100">
+            <div class="col-md-6" style="padding: 0 15px 0 0; border-right: 1px dashed #e0e0e0;">
+                <div class="forensic-header text-info" style="border-color:#e1f5fe;">Profile Info</div>
+                <table class="table table-borderless table-sm mb-0">
+                    <tbody>
+                        <tr><td style="${tdLabel}">Profile Type:</td><td style="${tdVal}">${report["Profile Type"]}</td></tr>
+                        <tr><td style="${tdLabel}">Trust Factor:</td><td style="${tdVal} color:${report["Trust Factor"]?.color || '#555'}">${report["Trust Factor"]?.text || 'N/A'}</td></tr>
+                        <tr><td style="${tdLabel}">Generation:</td><td style="${tdVal}">${report["Generation"] || 'N/A'}</td></tr>
+                        <tr><td style="${tdLabel}">Account Age:</td><td style="${tdVal}">${report["Account Age"] || 'N/A'}</td></tr>
+                        <tr><td style="${tdLabel}">Created At:</td><td style="${tdVal}">${report["Created At"] || 'N/A'}</td></tr>
+                        <tr><td style="${tdLabel}">Time Phase:</td><td style="${tdValSmall}; font-weight:bold; color:#1976d2;">${report["Creation Phase"]}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6" style="padding: 0 0 0 15px;">
+                <div class="forensic-header text-info" style="border-color:#e1f5fe;">UID Info</div>
+                <table class="table table-borderless table-sm mb-0">
+                    <tbody>
+                        <tr><td style="${tdLabel}">Server Node:</td><td style="${tdValSmall}">${report["Server Node"] || 'N/A'}</td></tr>
+                        <tr><td style="${tdLabel}">Hardware Origin:</td><td style="${tdVal}">${report["Hardware Origin"]}</td></tr>
+                        <tr><td style="${tdLabel}">Privacy Status:</td><td style="${tdVal}">${report["Privacy Status"]}</td></tr>
+                        <tr><td style="${tdLabel}">Seq. Clock:</td><td style="${tdVal}">${report["Seq. Clock"] || 'N/A'}</td></tr>
+                        <tr><td style="${tdLabel}">URN Format:</td><td style="${tdValSmall}">${report["Official URN"]}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+function showUIDForensics(uid) {
+    const report = decodeUUIDv1Offline(uid);
+    const zone = document.getElementById('forensic-expansion-zone');
+    if (report) { zone.innerHTML = `<div class="forensic-panel" style="border-left: 4px solid #00BCD4;">${buildTwoColumnForensics(report)}</div>`; }
+    else { zone.innerHTML = `<div class="forensic-panel text-center text-danger font-weight-bold">Formato de UID inválido para análisis matemático v1.</div>`; }
+}
+
+function buildBehavioralProfile(uid) {
+    const zone = document.getElementById('forensic-expansion-zone');
+    if (!window.currentPlayerStats) {
+        zone.innerHTML = `<div class="forensic-panel text-danger text-center font-weight-bold">Datos estadísticos no disponibles para análisis avanzado.</div>`;
+        return;
+    }
+    const stats = window.currentPlayerStats;
+    let matches = parseInt(stats["Matches played"]) || 0; let wins = parseInt(stats["Wins"]) || 0;
+    let chars = parseInt(stats["Chars typed in chat"]) || 0; let draws = parseInt(stats["Words drawed"]) || 0;
+    let winRate = matches > 0 ? ((wins / matches) * 100).toFixed(1) : 0;
+    
+    zone.innerHTML = `
+        <div class="forensic-panel" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 8px 25px rgba(156, 39, 176, 0.2); margin-top: 25px;">
+            <div style="background: linear-gradient(135deg, #ff9800, #9c27b0); color: white; text-align: center; font-weight: 900; font-size: 1.2em; padding: 10px; border-radius: 6px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;">🧠 User extras</div>
+            <div class="row text-center">
+                <div class="col-sm-3"><h5 style="color:#d32f2f;">${winRate}%</h5><small>Win Rate</small></div>
+                <div class="col-sm-3"><h5 style="color:#1976d2;">${matches}</h5><small>Total Matches</small></div>
+                <div class="col-sm-3"><h5 style="color:#388e3c;">${chars}</h5><small>Chat Activity</small></div>
+                <div class="col-sm-3"><h5 style="color:#fbc02d;">${draws}</h5><small>Total Drawings</small></div>
+            </div>
+            <p class="text-center mt-3 text-muted"><em>thats it :).</em></p>
+        </div>`;
+}
+
+window.buildSocialTopology = async function(uid) {
+    const zone = document.getElementById('forensic-expansion-zone');
+    zone.innerHTML = `
+        <div class="forensic-panel" style="border-left: 4px solid #4CAF50;">
+            <div class="forensic-header" style="color:#4CAF50;">🕸️ Connections:</div>
+            <div id="social-loading" class="text-center p-4"><span class="text-success font-weight-bold">Escaneando perfiles... <i class="fas fa-spinner fa-spin"></i></span></div>
+            <div id="social-results" class="row" style="display:none;"></div>
+        </div>`;
+
+    const db = await new Promise(res => { const req = indexedDB.open("DrawariaLiteDB", 2); req.onsuccess = e => res(e.target.result); });
+    let directFriends =[];
+
+    db.transaction("social", "readonly").objectStore("social").get(uid).onsuccess = (ev) => {
+        if (ev.target.result && ev.target.result.friends) directFriends = ev.target.result.friends;
+        document.getElementById('social-loading').style.display = 'none';
+        const resBox = document.getElementById('social-results');
+        resBox.style.display = 'flex';
+        
+        let friendsHTML = directFriends.map(f => {
+            const uid = f.uid || f; const name = f.name || f;
+            return `<a href="?uid=${uid}" class="social-node">
+                <div class="node-name"><img src="avatar/${uid}.webp" style="width:26px; height:26px; border-radius:4px; margin-right:10px; border:1px solid #ddd;" onerror="this.src='user.png';"><span>${name}</span></div>
+                <span class="clan-tag" style="background:#4CAF5022; border-color:#4CAF50; color:#4CAF50;">Friend</span>
+            </a>`;
+        }).slice(0, 50).join('');
+
+        resBox.innerHTML = `
+            <div class="col-md-12">
+                <div class="text-success font-weight-bold mb-2"><i class="fas fa-check-circle"></i> some friends:</div>
+                <div style="max-height:400px; overflow-y:auto; padding-right:5px; border: 1px solid #e8f5e9; border-radius: 4px; background: #fff;">${friendsHTML || '<div class="text-muted small p-2">Sin conexiones oficiales.</div>'}</div>
+            </div>`;
+    };
+};
+
+/* EVENTOS GLOBALES DEL MENÚ / BÚSQUEDA */
+$(function() {
+    const input = $('#nav-search-input'), resBox = $('#search-results-dropdown');
+    $('#search-clear-trash').on('click', () => { input.val('').focus(); resBox.hide(); });
+    
+    input.on('input', function() {
+        const q = $(this).val().trim().toLowerCase();
+        if (q.length < 2) return resBox.hide();
+        
+        indexedDB.open("DrawariaLiteDB", 2).onsuccess = e => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains("profiles")) return;
+            const store = db.transaction("profiles", "readonly").objectStore("profiles");
+            const matches =[];
+            store.openCursor().onsuccess = ev => {
+                const c = ev.target.result;
+                if (c && matches.length < 8) {
+                    const p = c.value;
+                    if ((p.name && p.name.toLowerCase().includes(q)) || (p.new_name && p.new_name.toLowerCase().includes(q)) || (p.uid && p.uid.toLowerCase().includes(q))) {
+                        matches.push({ ...p, display_name: p.new_name || p.name || "Unknown", secondary_name: (p.new_name && p.name !== p.new_name) ? p.name : "" });
+                    }
+                    c.continue();
+                } else if (matches.length > 0) {
+                    resBox.html(matches.map(p => `
+                        <div class="search-res-item" onclick="location.href='?uid=${p.uid}&search_name=${encodeURIComponent(p.display_name)}'">
+                            <img src="avatar/${p.uid}.webp" onerror="this.src='user.png';" style="width:28px; height:28px; border-radius:4px; margin-right:10px; border:1px solid #3F51B5; object-fit:cover;">
+                            <div>
+                                <div style="font-weight:bold; color:white;">${p.display_name}</div>
+                                ${p.secondary_name ? `<div style="font-size:0.7em; color:#ff9800;"> ${p.secondary_name}</div>` : ''}
+                                <div style="font-size:0.7em; color:#a0cfff;">UID: ${p.uid.substring(0,8)}...</div>
+                            </div>
+                        </div>
+                    `).join('')).show();
+                } else resBox.hide();
+            };
+        };
+    });
+    $(document).on('click', e => { if (!$(e.target).closest('.search-box-wrapper').length) resBox.hide(); });
+});
+
+window.currentActiveForensicPanel = null;
+const EXPANSION_ZONE = 'forensic-expansion-zone';
+
+document.addEventListener('click', e => {
+    const targetId = e.target.id || e.target.parentElement?.id;
+    const uid = new URLSearchParams(window.location.search).get('uid');
+
+    if (targetId === 'copy-uid-btn' && uid) { e.preventDefault(); navigator.clipboard.writeText(uid); return; }
+    if (targetId === 'menu-alter-username') {
+        e.preventDefault();
+        const p = window.currentPlayerProfile;
+        if (!p || !p.new_name) return;
+        const nameSpan = document.getElementById('header-display-name');
+        const nextText = (nameSpan.innerText === p.new_name) ? p.name : p.new_name;
+        nameSpan.style.opacity = 0;
+        setTimeout(() => { nameSpan.innerText = nextText; window.currentPlayerName = nextText; nameSpan.style.opacity = 1; nameSpan.style.transition = "opacity 0.3s ease"; }, 150);
+        return;
+    }
+
+    if (!uid || !['menu-forensics-uid', 'menu-forensics-behavior', 'menu-forensics-social'].includes(targetId)) return;
+    
+    e.preventDefault();
+    const dropdownMenu = document.querySelector('.dropdown-menu.show');
+    if (dropdownMenu) dropdownMenu.classList.remove('show');
+
+    const panelType = targetId.split('-')[2];
+    const zone = document.getElementById(EXPANSION_ZONE);
+
+    if (window.currentActiveForensicPanel === panelType) {
+        if (zone) zone.innerHTML = '';
+        window.currentActiveForensicPanel = null;
+        return;
+    }
+
+    if (zone) zone.innerHTML = ''; 
+    window.currentActiveForensicPanel = panelType;
+    
+    if (panelType === 'uid') showUIDForensics(uid);
+    else if (panelType === 'behavior') buildBehavioralProfile(uid);
+    else if (panelType === 'social') buildSocialTopology(uid);
+});
+
+</script>
+</body>
+</html>

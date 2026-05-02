@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Drawaria.online ▶ Lite Search</title>
+    
+    <meta name="description" content="Explore thousands of indexed profiles, historical art archives and hidden secrets. Developed by YouTubeDrawaria.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="YouTubeDrawaria">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <script>
+        (function() {
+            var test = document.createElement('span');
+            test.className = 'fa';
+            test.style.display = 'none';
+            document.head.appendChild(test);
+            var isLoaded = window.getComputedStyle(test).fontFamily.indexOf('Font Awesome') !== -1;
+            if (!isLoaded) {
+                document.write('<link rel="stylesheet" href="all.css">');
+            }
+            test.remove();
+        })();
+    </script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script>
+        (function() {
+            var test = document.createElement('div');
+            test.className = 'hidden d-none';
+            document.head.appendChild(test);
+            var isLoaded = window.getComputedStyle(test).display === 'none';
+            if (!isLoaded) {
+                document.write('<link rel="stylesheet" href="boostrap-style.css">');
+            }
+            test.remove();
+        })();
+    </script>
+
+    <link rel="stylesheet" href="primary.css">
+    <link rel="stylesheet" href="avataranimations.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="jquery.min.js"><\/script>')</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script>window.Popper || document.write('<script src="popper.min.js"><\/script>')</script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script>if(typeof($.fn.modal) === 'undefined') { document.write('<script src="bootstrap.min.js"><\/script>'); }</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/exifreader/dist/exif-reader.min.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    
+	
+    <meta name="image" content="siteimage.jpg">
+    <meta itemprop="name" content="Drawaria.online Wiki">
+    <meta itemprop="description"  content="The community wiki for Drawaria.online. Explore player profiles, gallery history, social data and more.">
+    <meta itemprop="image" content="siteimage.jpg">
+    <meta name="og:title" content="Drawaria.online Wiki">
+    <meta name="og:description"  content="The community wiki for Drawaria.online. Explore player profiles, gallery history, social data and more.">
+    <meta name="og:image" content="siteimage.jpg">
+    <meta property="og:url" content="https://drawaria.oline.wiki.github.io/">
+    <meta name="og:site_name" content="Drawaria.online Wiki">
+    <meta name="fb:app_id" content="2271348646457448">
+    <meta name="og:type" content="website">
+    
+    <!-- ES Modules con Headers CORS Compatibles para evitar error de File:/// -->
+    <script type="module">
+        import { rectifyConfusion } from 'https://esm.sh/unicode-confusables@1.1.2';
+        import uFuzzy from 'https://esm.sh/@leeoniya/ufuzzy@1.0.14';
+
+        window.OSINT_ENGINE = {
+            rectify: rectifyConfusion,
+            ufuzzy: new uFuzzy({
+                intraMode: 1, 
+                intraIns: 1, intraSub: 1, intraTrn: 1, intraDel: 1
+            })
+        };
+        console.log("🔥 OSINT Engine Loaded via CDN");
+    </script>
+
+    <style>
+        /* =========================================
+           SISTEMA DE WORKER Y UI NÚCLEO
+           ========================================= */
+        #setup-view {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: #005AB7; 
+          background: 
+            url('pattern.png') repeat center, 
+            radial-gradient(circle, rgba(0, 90, 187, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%);
+          z-index: 1000000;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          color: white;
+          font-family: 'Comic Sans MS', 'Inter', sans-serif;
+        }
+
+        .page-title {
+          font-size: 2.5em;
+          font-weight: 900;
+          margin-bottom: -10px;
+          color: #F9A13F;
+          text-shadow: 2px 2px 0px #B08C68, -2px -2px 0px #B08C68, 2px -2px 0px #B08C68, -2px 2px 0px #B08C68;
+          position: relative;
+          z-index: 10;
+        }
+
+        .setup-card {
+            background: #FDFDFD;
+            border: 6px solid #8B5A2B;
+            border-radius: 35px;
+            padding: 30px;
+            width: 90%;
+            max-width: 520px;
+            text-align: center;
+            box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        .worker-image-container {
+            margin: 10px auto 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .worker-img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+
+        .setup-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: #FF9800;
+            margin-top: 0;
+            margin-bottom: 15px;
+            -webkit-text-stroke: 1.5px #8B5A2B;
+            text-transform: uppercase;
+        }
+
+        .system-name {
+            font-size: 19px;
+            font-weight: 900;
+            color: #FF9800;
+            margin-top: 0;
+            margin-bottom: 15px;
+            -webkit-text-stroke: 1.5px #8B5A2B;
+            text-transform: uppercase;
+        }
+
+        .system-desc {
+            color: #555;
+            font-size: 13px;
+            margin: 5px 0 20px 0;
+        }
+
+        .progress-container {
+            background: #EEE;
+            border: 3px solid #8B5A2B;
+            border-radius: 50px;
+            height: 28px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        #progress-fill {
+            background: #00BCD4;
+            width: 0%;
+            height: 100%;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: width 0.4s ease;
+        }
+
+        #status-text {
+            font-weight: bold;
+            color: #8B5A2B;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        #btn-worker {
+            background: #FF9800;
+            color: white;
+            border: 4px solid #8B5A2B;
+            padding: 12px 35px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 16px;
+            transition: 0.2s;
+            box-shadow: 0 5px 0px #8B5A2B;
+        }
+
+        #btn-worker:hover {
+            background: #FFA726;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0px #8B5A2B;
+        }
+
+        #btn-worker:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0px #8B5A2B;
+        }
+
+        .grid-item img {
+            width: 100% !important;
+            height: 245px !important;
+            object-fit: cover !important;
+            border-radius: 4px;
+            display: block;
+        }
+
+        /* =========================================
+           OTROS ESTILOS DEL WIKI Y ELEMENTOS 
+           ========================================= */
+        .sitemenu .nav-link { color: #ffffff !important; }
+        .search-box-wrapper { display: inline-flex; align-items: center; position: relative; width: 100%; max-width: 400px; }
+        #nav-search-input { width: 100%; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 5px 35px 5px 15px; color: white; font-size: 0.9em; outline: none; transition: all 0.2s; }
+        #nav-search-input:focus { background: rgba(255, 255, 255, 0.25); border-color: #00BCD4; box-shadow: 0 0 5px rgba(0, 188, 212, 0.5); }
+        .search-lupa { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.6); pointer-events: none; }
+        #search-clear-trash { margin-left: 10px; color: #a0cfff; cursor: pointer; font-size: 1.1em; transition: color 0.2s; }
+        #search-clear-trash:hover { color: #ff5252 !important; }
+        #search-results-dropdown { position: absolute; top: 100%; left: 0; width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 5px; z-index: 10000; max-height: 250px; overflow-y: auto; display: none; text-align: left; margin-top: 5px; }
+        .search-res-item { padding: 8px 12px; border-bottom: 1px solid #222; cursor: pointer; display: flex; align-items: center; color: #ccc; }
+        .search-res-item:hover { background: #252525; color: white; }
+
+        .stats-banner { background: #ffffff52; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; color: white; border: 1px solid rgba(255,255,255,0.2); }
+        
+        .friends-controls-wrapper { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; margin-bottom: 20px; flex-wrap: wrap; background: #00000030; padding: 15px; border-radius: 8px; }
+        
+        #da-search-method, #da-search-input { 
+            background: rgba(0, 0, 0, 0.6); color: #fff; border: 1px solid #a0cfff; 
+            border-radius: 4px; padding: 8px 10px; font-size: 14px; outline: none; 
+        }
+        #da-search-method { cursor: pointer; font-weight: 600; }
+        #da-search-input { width: 300px; font-weight: 600; }
+        
+        .show-avatars-label { color: white; font-weight: bold; display: flex; align-items: center; gap: 8px; cursor: pointer; background: transparent; font-size: 14px; transition: opacity 0.3s ease; }
+        .show-avatars-label input[type="checkbox"] { transform: scale(1.2); cursor: pointer; }
+
+        #friendscontainer > .row { background: #1f88f7; border-radius: 3px; padding: 15px; display: flex; flex-wrap: wrap; justify-content: center; }
+        .friendcard { background: #00b7ff; border-radius: 4px; margin: 0.5em; padding: 0; color: #ffffff; height: 3.5em; position: relative; display: flex; align-items: center; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .friendcard:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); background: #00c3ff; }
+        
+        .friendcard a.friend-link { color: #ffffff; width: 100%; text-align: center; text-decoration: none; padding: 0 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        .friendcard a.friend-link:hover { text-decoration: none; }
+        
+        .friendcard img.friend-avatar { display: none; width: 3.5em; height: 3.5em; border-radius: 4px 0 0 4px; cursor: pointer; position: absolute; left: 0; top: 0; object-fit: cover; border-right: 1px solid rgba(255,255,255,0.2); }
+        .show-avatars-mode .friendcard a.friend-link { text-align: left; width: calc(100% - 4em); left: 4em; position: absolute; line-height: 3.5em; justify-content: flex-start; }
+        .show-avatars-mode .friendcard img.friend-avatar { display: block; }
+
+        .osint-badge { background: #ffeb3b; color: #000; font-size: 9px; padding: 3px 6px; border-radius: 10px; font-weight: 900; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.3); text-transform: uppercase; }
+        .altered-badge { background: #ff5252; color: white; font-size: 9px; padding: 3px 6px; border-radius: 10px; font-weight: 900; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.3); text-transform: uppercase; }
+        .hidden-badge { background: #4caf50; color: white; font-size: 9px; padding: 3px 6px; border-radius: 10px; font-weight: 900; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.3); text-transform: uppercase; }
+        .mod-badge { background: #f1c40f; color: #000; font-size: 9px; padding: 3px 6px; border-radius: 10px; font-weight: 900; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.3); text-transform: uppercase; white-space: nowrap; display: inline-block; }
+        .lead-badge { background: #ffc0cb; color: #000; font-size: 7px; padding: 3px 6px; border-radius: 10px; font-weight: 900; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.3); text-transform: uppercase; white-space: nowrap; display: inline-block; }
+
+        .mod-aura { border: 2px solid #f1c40f !important; box-shadow: 0 0 10px rgba(241, 196, 15, 0.6) !important; }
+        .lead-aura { border: 2px solid #ffc0cb !important; box-shadow: 0 0 15px rgba(255, 192, 203, 0.8) !important; }
+
+        .mod-aura img.friend-avatar, 
+        .lead-aura img.friend-avatar {
+            width: calc(3.5em - 4px) !important;
+            height: calc(3.5em - 4px) !important;
+            border-right: none !important;
+        }
+        .badge-stack { display: inline-flex; flex-direction: column; gap: 3px; margin-left: 8px; vertical-align: middle; }
+
+        .friend-tooltip { display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 10px; border-radius: 8px; border: 1px solid #ccc; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; z-index: 1000; min-width: 160px; pointer-events: none; }
+        .friend-tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; margin-left: -10px; border-width: 10px; border-style: solid; border-color: white transparent transparent transparent; }
+        .friend-tooltip::before { content: ''; position: absolute; top: 100%; left: 50%; margin-left: -11px; border-width: 11px; border-style: solid; border-color: #ccc transparent transparent transparent; z-index: -1; }
+        .friend-tooltip .tt-name { font-weight: 900; margin-bottom: 5px; font-size: 14px; color: #333; }
+        .friend-tooltip .tt-img { width: 50px; height: 50px; border-radius: 4px; background: #eee; margin-bottom: 5px; object-fit: cover; border: 1px solid #ccc; }
+        .friend-tooltip .tt-uid { font-size: 10px; color: #666; font-family: monospace; word-break: break-all; }
+        
+        .friendcard:hover .friend-tooltip { display: block; }
+        .show-avatars-mode .friendcard:hover .friend-tooltip { display: none; }
+
+        /* EXPANDED VIEW MODE */
+        .expanded-view-mode .friendcard { flex: 0 0 auto !important; max-width: none !important; width: auto !important; padding: 0 15px; min-width: 140px; }
+        .expanded-view-mode .friendcard a.friend-link { width: auto; padding: 0; position: relative; }
+        .expanded-view-mode.show-avatars-mode .friendcard { padding-left: 4em; }
+        .expanded-view-mode.show-avatars-mode .friendcard a.friend-link { left: 0; }
+        .expanded-view-mode .friendcard:hover .friend-tooltip { display: block !important; }
+
+        /* BIG VIEW MODE */
+        .big-view-mode #friendscontainer > .row { padding: 5px !important; gap: 1px; align-content: flex-start; }
+        .big-view-mode .friendcard { flex: 0 0 auto !important; max-width: none !important; width: 3.5em !important; height: 3.5em !important; margin: 0 !important; padding: 0 !important; background: transparent !important; border-radius: 0 !important; box-shadow: none !important; }
+        .big-view-mode .friendcard:hover { transform: none !important; }
+        .big-view-mode .friendcard a.friend-link { display: none !important; }
+        .big-view-mode .friendcard img.friend-avatar { display: block !important; position: relative !important; left: auto !important; top: auto !important; width: 100% !important; height: 100% !important; border-radius: 0 !important; border-right: none !important; }
+        .big-view-mode .friendcard:hover .friend-tooltip { display: block !important; }
+    </style>
+</head>
+
+<body>
+
+<div id="setup-view" style="display: none;">
+  <div class="setup-card">
+    <h2 class="setup-title">Download Profiles, Friends and Hidden connections</h2>
+    
+    <div class="worker-image-container">
+      <img src="august-guy.png" alt="Worker" class="worker-img">
+    </div>
+
+    <div class="setup-info">
+      <h3 class="system-name">Drawaria.online Wiki - Database Downloader</h3>
+      <p class="system-desc">Downloading profiles and social networks in batches through sequential processes.</p>
+    </div>
+
+    <div class="progress-wrapper">
+      <div class="progress-container">
+        <div id="progress-fill">0%</div>
+      </div>
+      <p id="status-text">Waiting for the start...</p>
+    </div>
+
+    <button id="btn-worker">Start download</button>
+  </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top sitemenu" style="background: #00000059; box-shadow: 0 5px 9px 0px rgba(0,0,0,0.5);">
+    <a class="navbar-brand" href="search.html"><img src="wiki2.png" width="246" height="30" style="margin-bottom: 5px;" ></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item"><a class="nav-link" href="scoreboards.html">Scoreboards</a></li>
+            <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+        </ul>
+        <div class="row no-gutters" style="display: flex; flex-wrap: wrap; flex: 1;">
+            <div class="col" style="text-align: center;">
+                <div class="search-box-wrapper">
+                    <div style="position: relative; width: 100%;">
+                        <input type="text" id="nav-search-input" placeholder="Search Drawaria Wiki..." autocomplete="off">
+                        <i class="fas fa-search search-lupa"></i>
+                        <div id="search-results-dropdown"></div>
+                    </div>
+                    <i class="fas fa-trash-alt" id="search-clear-trash" title="Clear search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div style="margin-top: 6em;"></div>
+
+<div class="container">
+    <div class="stats-banner">
+        <h2><i class="fas fa-search-location text-info"></i> Drawaria Wiki Lite Search</h2>
+        <p id="total-stats" style="margin:0; font-weight:bold;">Loading...</p>
+    </div>
+
+    <div class="friends-controls-wrapper">
+        <div style="display: flex; align-items: center; gap: 8px; color: white; font-weight: bold; background: rgba(0,0,0,0.4); padding: 5px 15px; border-radius: 20px;">
+            <i class="fas fa-minus" id="year-minus" style="cursor: pointer; color: #ff5252;" title="Previous Year"></i>
+            <span id="year-display" style="width: 75px; text-align: center; user-select: none;">All Years</span>
+            <i class="fas fa-plus" id="year-plus" style="cursor: pointer; color: #4caf50;" title="Next Year"></i>
+        </div>
+
+        <select id="da-search-method">
+            <option value="name" selected>Search Name</option>
+            <option value="uid">Search by UID</option>
+        </select>
+        
+        <input type="text" id="da-search-input" placeholder="Search global directory..." autocomplete="off">
+        
+        <label class="show-avatars-label">
+            <input type="checkbox" id="show-avatars-cb"> 
+            <i class="fas fa-images text-info"></i> Avatars
+        </label>
+
+        <label class="show-avatars-label" id="alter-names-wrapper">
+            <input type="checkbox" id="alter-names-cb"> 
+            <i class="fas fa-exchange-alt" style="color:#ff5252;"></i> Altered Names
+        </label>
+
+        <label class="show-avatars-label" id="show-moderators-wrapper">
+            <input type="checkbox" id="show-moderators-cb"> 
+            <i class="fas fa-user-shield" style="color:#f1c40f;"></i> Moderator
+        </label>
+
+        <label class="show-avatars-label" id="show-lead-wrapper" style="display: none;">
+            <input type="checkbox" id="show-lead-cb"> 
+            <i class="fas fa-crown" style="color:#ffc0cb;"></i> Lead Moderator
+        </label>
+
+        <label class="show-avatars-label" id="has-hidden-wrapper">
+            <input type="checkbox" id="has-hidden-cb"> 
+            <i class="fas fa-mask" style="color:#4caf50;"></i> Has Hidden Friends
+        </label>
+
+        <label class="show-avatars-label" id="expanded-view-wrapper">
+            <input type="checkbox" id="expanded-view-cb"> 
+            <i class="fas fa-list" style="color:#a0cfff;"></i> Expanded View
+        </label>
+
+        <label class="show-avatars-label" id="big-view-wrapper">
+            <input type="checkbox" id="big-view-cb"> 
+            <i class="fas fa-th" style="color:#a0cfff;"></i> Big View
+        </label>
+    </div>
+</div>
+
+<div class="container" id="friendscontainer">
+    <div class="row justify-content-center no-gutters" id="friends-list-wrapper">
+    </div>
+    <div style="display: flex; gap: 15px; justify-content: center; margin: 20px auto;">
+        <button id="load-more-btn" style="display:none; border-radius: 25px; padding: 10px 40px; font-weight: bold; background: white; color: #007bff; border: none; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.2s;">Load More</button>
+        <button id="load-all-btn" style="display:none; border-radius: 25px; padding: 10px 40px; font-weight: bold; background: #00b7ff; color: white; border: none; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.2s;">Load All (Auto-scroll)</button>
+    </div>
+</div>
+
+<script>
+// ============================================================================
+// 1. MOTOR DECANCER Y UTILIDADES
+// ============================================================================
+// ============================================================================
+// 1. MOTOR DECANCER ACTUALIZADO (Soporte Ruso + Latin)
+// ============================================================================
+const gamerMap = {
+    // Caracteres Rusos / Cirílicos
+    'а':'a', 'А':'a', 'б':'b', 'Б':'b', 'в':'v', 'В':'v', 'г':'g', 'Г':'g', 
+    'д':'d', 'Д':'d', 'е':'e', 'Е':'e', 'ё':'e', 'Ё':'e', 'ж':'zh', 'Ж':'zh',
+    'з':'z', 'З':'z', 'и':'i', 'И':'i', 'й':'j', 'Й':'j', 'к':'k', 'К':'k',
+    'л':'l', 'Л':'l', 'м':'m', 'М':'m', 'н':'n', 'Н':'n', 'о':'o', 'О':'o',
+    'п':'p', 'П':'p', 'р':'r', 'Р':'r', 'с':'s', 'С':'s', 'т':'t', 'Т':'t',
+    'у':'u', 'У':'u', 'ф':'f', 'Ф':'f', 'х':'h', 'Х':'h', 'ц':'ts', 'Ц':'ts',
+    'ч':'ch', 'Ч':'ch', 'ш':'sh', 'Ш':'sh', 'щ':'sch', 'Щ':'sch', 'ъ':'', 'Ъ':'',
+    'ы':'y', 'Ы':'y', 'ь':'', 'Ь':'', 'э':'e', 'Э':'e', 'ю':'yu', 'Ю':'yu', 'я':'ya', 'Я':'ya',
+
+    // Caracteres "Fancy" y Leetspeak
+    '卂':'a', 'Ꮨ':'a', 'Λ':'a', 'α':'a', 'Δ':'a', '丹':'a', 'ᗅ':'a', 'ᕱ':'a', 'ᴀ':'a', 'Α':'a', '@':'a', '4':'a',
+    '乃':'b', '𐌁':'b', 'β':'b', 'ʙ':'b', 'Β':'b', '8':'b',
+    '匚':'c', '૮':'c', 'ċ':'c', '𝗰':'c', 'ꮯ':'c', 'ƈ':'c', 'с':'c', 'С':'c', '©':'c', '¢':'c',
+    '刀':'d', 'ⅅ':'d', 'ᴅ':'d', 'ꭰ':'d', 'δ':'d',
+    '乇':'e', 'ᴇ':'e', 'ꍟ':'e', 'ε':'e', 'Ε':'e', 'ҽ':'e', '3':'e',
+    '下':'f', 'ғ':'f', 'Φ':'f', 'φ':'f',
+    '彑':'g', 'ɢ':'g', 'Γ':'g', 'γ':'g', 'г':'g', 'Г':'g', 'Ĝ':'g', '9':'g',
+    '卄':'h', 'ʜ':'h', 'ꃅ':'h', 'Η':'h', 'ɧ':'h', 'ħ':'h', 'ԋ':'h',
+    'Ĩ':'i', 'ɪ':'i', 'Ι':'i', 'ί':'i', 'ι':'i', 'í':'i', 'ì':'i', '¡':'i', '!':'i', '1':'i', 'ı':'i',
+    '丁':'j', 'ᴊ':'j',
+    'ᴋ':'k', 'κ':'k', 'Κ':'k',
+    '乚':'l', 'ʟ':'l', 'λ':'l', 'л':'l', 'Л':'l', 'ĺ':'l', 'ļ':'l', 'ľ':'l', 'ł':'l',
+    '爪':'m', 'ᴍ':'m', 'Μ':'m', 'μ':'m', 'ო':'m',
+    'ɴ':'n', 'Ŋ':'n', 'Ν':'n', 'ν':'n', 'ñ':'n', 'ń':'n', 'ņ':'n', 'ň':'n',
+    '〇':'o', 'ᴏ':'o', 'ο':'o', 'Ο':'o', 'ø':'o', 'ö':'o', 'ó':'o', 'ò':'o', 'ô':'o', 'õ':'o', '0':'o',
+    '尸':'p', 'ᴘ':'p', 'ρ':'p', 'Ρ':'p',
+    'ǫ':'q',
+    '尺':'r', 'ʀ':'r', 'ɽ':'r', 'ř':'r', 'ŕ':'r', 'ŗ':'r', '®':'r',
+    '丂':'s', 'ѕ':'s', 'ς':'s', 'ʂ':'s', 'ꑄ':'s', 'ŝ':'s', 'Ꮥ':'s', 'Σ':'s', 'σ':'s', '$':'s', '§':'s', 'š':'s', 'ş':'s', 'ś':'s', '5':'s',
+    'ㄒ':'t', 'ᴛ':'t', 'τ':'t', 'ţ':'t', 'ʈ':'t', 'Ϯ':'t', 'Τ':'t', 'ț':'t', 'ť':'t', 'ŧ':'t', '†':'t', '7':'t',
+    'ᴜ':'u', 'υ':'u', 'Υ':'u', 'ú':'u', 'ù':'u', 'û':'u', 'ü':'u', 'ů':'u', 'ű':'u', 'ų':'u',
+    'ᴠ':'v',
+    'ᴡ':'w', 'ω':'w', 'Ω':'w',
+    '乂':'x', 'χ':'x', 'ξ':'x', 'Χ':'x', 'Ξ':'x', '×':'x',
+    'ʏ':'y', 'ყ':'y', 'Υ':'y', 'υ':'y', 'ý':'y', 'ÿ':'y', 'ŷ':'y',
+    '乙':'z', 'ᴢ':'z', 'ζ':'z', 'Ζ':'z', 'ž':'z', 'ż':'z', 'ź':'z', '2':'z',
+    'â':'a', 'æ':'ae', 'œ':'oe'
+};
+
+function advancedDecancer(str) {
+    if (!str) return "";
+    let result = "";
+    // Normalización de ancho completo (Full-width)
+    for (let char of str) {
+        let code = char.codePointAt(0);
+        if (code >= 0xFF21 && code <= 0xFF3A) { result += String.fromCodePoint(code - 0xFEE0); continue; }
+        if (code >= 0xFF41 && code <= 0xFF5A) { result += String.fromCodePoint(code - 0xFEE0); continue; }
+        result += char;
+    }
+    result = result.normalize("NFKD");
+    let translated = "";
+    for (let c of result) { translated += gamerMap[c] || c; }
+    return translated.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/gi, '').toLowerCase();
+}
+
+function getYearFromUUID(uid) {
+    if (!uid) return null;
+    const parts = uid.split('-');
+    if (parts.length === 5 && parts[2].startsWith('1')) {
+        const timeHex = parts[2].substring(1) + parts[1] + parts[0];
+        try {
+            const timeInt = BigInt("0x" + timeHex);
+            const gregorianOffset = 122192928000000000n;
+            const timestampMs = Number((timeInt - gregorianOffset) / 10000n);
+            return new Date(timestampMs).getFullYear();
+        } catch(e) { return null; }
+    }
+    return null;
+}
+
+// ============================================================================
+// 2. DATOS MAESTROS Y LÓGICA DE BASE DE DATOS E INDEXEDDB
+// ============================================================================
+const availableYears =[2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, "All Years"];
+let currentYearIndex = 8;
+let isAutoScrollActive = false;
+
+const moderatorsData = {
+    "1d6a26d0-adb3-11ec-8266-c399f90709b7": { isLead: false, alter: "Level 90+ Gold" },
+    "4e4743e0-415d-11ec-b5b5-6bdacecdd51e": { isLead: false, alter: "Purple" },
+    "14482ed0-8b0e-11eb-ad90-d99b8799e742": { isLead: false, alter: "GM" },
+    "79bc7a00-e193-11ec-9fd3-c3a00b129da4": { isLead: false, alter: "Antarctica" },
+    "d767f1b0-81e9-11ed-9fd3-c3a00b129da4": { isLead: false, alter: "Aqua" },
+    "d9b2d0c0-34f5-11ed-9fd3-c3a00b129da4": { isLead: false, alter: "Snow" },
+    "b6e436a0-a9ac-11ea-86e2-6bb275999a37": { isLead: false, alter: "North America GM" },
+    "bdd78150-e14d-11ea-9474-df80dd47fcaf": { isLead: false, alter: "Crimson" },
+    "75a09f80-4dbd-11ea-9845-c3255e8b796b": { isLead: false, alter: "Lime" },
+    "55c7be40-aae1-11ec-8266-c399f90709b7": { isLead: true, alter: "Executive Officer" },
+    "dd639e60-4a82-11ec-b5b5-6bdacecdd51e": { isLead: true, alter: "Cat Question Manager" },
+    "6e744120-3ea5-11ea-baf4-3d467b65c28b": { isLead: true, alter: "Honoured Community Member" },
+    "a2731a30-03cf-11ee-9316-7129946a7a5f": { isLead: true, alter: "Celestial Guardian" },
+    "c998b5a0-a8da-11ef-acaf-250da20bac69": { isLead: true, alter: "Crime & Punishment" },
+    "42ef2b30-1afa-11ed-9fd3-c3a00b129da4": { isLead: true, alter: "Affectionate and cozy" },
+    "8fa678a0-091f-11eb-9c3f-2df35a2de16e": { isLead: true, alter: "Kshatriya" },
+    "4769bbd0-0a05-11ee-b951-ffe73ac3abcf": { isLead: true, alter: "OrangeRed" },
+    "b396b100-75b1-11ea-aa80-fdad07d64ca1": { isLead: true, alter: "Director of Goo Corporation" },
+    "d1b4c7c0-cc70-11e9-a0b1-adbc8a9d0843": { isLead: true, alter: "OG" },
+    "12a01460-bcfe-11ee-87f6-21cee5ac607b": { isLead: true, alter: "Russian channel Mod" }
+};
+
+let allData = [];
+let filteredData = [];
+let advancedCache =[];
+let itemsToShow = 100;
+let currentIndex = 0;
+let searchTimeout;
+
+/* CÓDIGO DEL WORKER PARA CREAR LA BASE DE DATOS DE BÚSQUEDA */
+const searchWorkerCode = `
+self.onmessage = async function(e) {
+    const { profilesArr, socialArr, hiddenArr } = e.data;
+    const DB_NAME = "DrawariaSearchDB";
+    const request = indexedDB.open(DB_NAME, 1);
+
+    request.onerror = (err) => self.postMessage({ status: "Error DB: " + err });
+
+    request.onsuccess = function(event) {
+        const db = event.target.result;
+        const tx = db.transaction("search_profiles", "readwrite");
+        const store = tx.objectStore("search_profiles");
+
+        self.postMessage({ status: "Cross-referencing data..." });
+
+        const userSet = new Map();
+        const hiddenMap = new Map();
+
+        if(hiddenArr) hiddenArr.forEach(h => hiddenMap.set(h.owner_uid, h.friends ? h.friends.length : 0));
+
+        if(profilesArr) {
+            profilesArr.forEach(p => {
+                userSet.set(p.uid, { uid: p.uid, name: p.name, new_name: p.new_name, hasHiddenFriends: false });
+            });
+        }
+
+        if(socialArr) {
+            socialArr.forEach(s => {
+                if (!userSet.has(s.owner_uid)) userSet.set(s.owner_uid, { uid: s.owner_uid, name: s.owner_name || "Unknown", new_name: s.new_name || null, hasHiddenFriends: false });
+                const originalFriendsCount = hiddenMap.get(s.owner_uid) || 0;
+                if (originalFriendsCount === 0 && s.friends && s.friends.length > 0) userSet.get(s.owner_uid).hasHiddenFriends = true;
+            });
+        }
+
+        const allDataArray = Array.from(userSet.values());
+        self.postMessage({ status: "Saving " + allDataArray.length + " profiles to IndexedDB..." });
+
+        allDataArray.forEach((p, i) => {
+            store.put(p);
+            if (i % 5000 === 0) {
+                self.postMessage({ status: "Profiles saved: " + Math.round((i/allDataArray.length)*100) + "%" });
+            }
+        });
+
+        tx.oncomplete = () => {
+            db.close();
+            self.postMessage({ status: "¡Completo!", complete: true });
+        };
+    };
+};
+`;
+
+// --- GUARDIÁN DE ARRANQUE POTENTE DE VERDAD ---
+window.addEventListener('DOMContentLoaded', () => {
+    const checkDB = indexedDB.open("DrawariaSearchDB", 1);
+    
+    checkDB.onupgradeneeded = e => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('search_profiles')) {
+            db.createObjectStore("search_profiles", { keyPath: "uid" });
+        }
+    };
+    
+    checkDB.onsuccess = e => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('search_profiles')) {
+            document.getElementById('setup-view').style.display = 'flex';
+            return;
+        }
+        
+        const transaction = db.transaction(['search_profiles'], 'readonly');
+        const store = transaction.objectStore('search_profiles');
+        const countReq = store.count();
+
+        countReq.onsuccess = () => {
+            if (countReq.result > 0) {
+                document.getElementById('setup-view').style.display = 'none';
+                loadDataIntoMemory(); 
+            } else {
+                document.getElementById('setup-view').style.display = 'flex';
+            }
+        };
+    };
+});
+
+document.getElementById('btn-worker').addEventListener('click', async function() {
+    this.style.display = 'none';
+    const statusText = document.getElementById('status-text');
+    const fill = document.getElementById('progress-fill');
+    
+    statusText.innerText = "Loading profiles and friends...";
+    fill.style.width = "10%";
+    fill.innerText = "10%";
+
+    const loadScript = (src) => new Promise(res => {
+        const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = res; document.head.appendChild(s);
+    });
+
+    await loadScript('relational_profiles_v5.js');
+    if (!window.relationalProfiles) await loadScript('relational_profiles_v5.js');
+    fill.style.width = "30%";
+    fill.innerText = "30%";
+
+    await loadScript('relational_social_v5.js');
+    if (!window.relationalSocialMaps) await loadScript('relational_social_v5.js');
+    fill.style.width = "50%";
+    fill.innerText = "50%";
+
+    await loadScript('hidden_social.js');
+    fill.style.width = "70%";
+    fill.innerText = "70%";
+
+    statusText.innerText = "Injecting into Worker...";
+
+    const blob = new Blob([searchWorkerCode], { type: 'application/javascript' });
+    const worker = new Worker(URL.createObjectURL(blob));
+    
+    worker.postMessage({
+        profilesArr: window.relationalProfiles ||[],
+        socialArr: window.relationalSocialMaps || [],
+        hiddenArr: window.hiddenSocialMaps ||[]
+    });
+    
+    worker.onmessage = (msg) => {
+        if (msg.data.complete) {
+            fill.style.width = "100%";
+            fill.innerText = "100%";
+            statusText.innerText = "¡Listo!";
+            setTimeout(() => {
+                document.getElementById('setup-view').style.display = 'none';
+                
+                // Liberar memoria
+                window.relationalProfiles = null;
+                window.relationalSocialMaps = null;
+                window.hiddenSocialMaps = null;
+
+                loadDataIntoMemory();
+            }, 1000);
+        } else {
+            const match = msg.data.status.match(/(\d+)%/);
+            if (match) {
+                const perc = Math.round(70 + (parseInt(match[1]) * 0.3));
+                fill.style.width = perc + "%";
+                fill.innerText = perc + "%";
+            }
+            statusText.innerText = msg.data.status;
+        }
+    };
+});
+
+async function loadDataIntoMemory() {
+    const status = document.getElementById('total-stats');
+    if(status) status.innerHTML = "Loading data into memory for fast search... <i class='fas fa-spinner fa-spin'></i>";
+
+    const request = indexedDB.open("DrawariaSearchDB", 1);
+    request.onsuccess = (e) => {
+        const db = e.target.result;
+        const tx = db.transaction("search_profiles", "readonly");
+        const store = tx.objectStore("search_profiles");
+        
+        store.getAll().onsuccess = (ev) => {
+            allData = ev.target.result ||[];
+            
+            // Procesar cache en bloque (rápido en RAM)
+            advancedCache = allData.map(u => advancedDecancer((u.name || "") + " " + (u.new_name || "")));
+            
+            if(status) status.innerHTML = `Profiles And Friends loaded from DB. <b>${allData.length.toLocaleString()}</b> Added. Enjoy browsing!`;
+            applyFilters();
+        };
+    };
+}
+
+// ============================================================================
+// 3. MOTOR DE FILTRADO Y RENDERIZADO
+// ============================================================================
+function applyFilters() {
+    const query = document.getElementById('da-search-input').value.trim();
+    const method = document.getElementById('da-search-method').value;
+    const onlyAltered = document.getElementById('alter-names-cb').checked;
+    const onlyHidden = document.getElementById('has-hidden-cb').checked;
+    const onlyModerators = document.getElementById('show-moderators-cb').checked;
+    const onlyLead = document.getElementById('show-lead-cb').checked && onlyModerators;
+    const selectedYear = availableYears[currentYearIndex];
+
+    let temp = [];
+    let tempCache =[];
+
+    for (let i = 0; i < allData.length; i++) {
+        const p = allData[i];
+        
+        if (selectedYear !== "All Years") {
+            if (getYearFromUUID(p.uid) !== selectedYear) continue;
+        }
+
+        const isAltered = p.new_name && (p.new_name !== p.name);
+        const isMod = moderatorsData.hasOwnProperty(p.uid);
+        const isLeadUser = isMod && moderatorsData[p.uid].isLead;
+        
+        if (onlyAltered || onlyHidden || onlyModerators) {
+            const matchAltered = onlyAltered && isAltered;
+            const matchHidden = onlyHidden && p.hasHiddenFriends;
+            let matchMod = false;
+            if (onlyModerators) matchMod = onlyLead ? isLeadUser : isMod;
+            
+            if (!(matchAltered || matchHidden || matchMod)) continue;
+        }
+
+        if (query !== "") {
+            if (method === 'name') {
+                if (!advancedCache[i].includes(advancedDecancer(query))) continue;
+            } else {
+                if (!p.uid.toLowerCase().includes(query.toLowerCase())) continue;
+            }
+        }
+        
+        temp.push(p);
+        tempCache.push(advancedCache[i]);
+    }
+
+    filteredData = temp;
+    currentIndex = 0;
+    document.getElementById('friends-list-wrapper').innerHTML = '';
+    renderChunk();
+}
+
+const domains =[
+    'https://cdn1.tusitio.com',
+    'https://cdn2.tusitio.com',
+    'https://assets.global.com',
+    'https://img-cache.net'
+];
+
+function renderChunk() {
+    const board = document.getElementById('friends-list-wrapper');
+    const showAlterView = document.getElementById('alter-names-cb').checked;
+    const showLeadToggled = document.getElementById('show-lead-cb').checked;
+    
+    const nextBatch = filteredData.slice(currentIndex, currentIndex + itemsToShow);
+    if (currentIndex === 0 && nextBatch.length === 0) {
+        board.innerHTML = '<div style="color:white; padding: 20px; text-align:center; font-weight:bold; width:100%;">No matches found.</div>';
+        document.getElementById('load-more-btn').style.display = 'none';
+        document.getElementById('load-all-btn').style.display = 'none';
+        return;
+    }
+
+    let html = '';
+    const fallBackImg = "this.onerror=null;this.src='user.png';";
+
+    nextBatch.forEach(f => {
+        const isMod = moderatorsData.hasOwnProperty(f.uid);
+        const isAltered = f.new_name && (f.new_name !== f.name);
+        const displayFname = (showAlterView && isAltered) ? f.new_name : f.name;
+        const profileUrl = `profile.html?uid=${f.uid}&search_name=${encodeURIComponent(displayFname)}`;
+        
+        let auraClass = '';
+        let badges =[];
+        if (isAltered) badges.push('<span class="altered-badge">ALTERED</span>');
+        if (f.hasHiddenFriends) badges.push('<span class="hidden-badge">HIDDEN</span>');
+        
+        if (isMod) {
+            const modInfo = moderatorsData[f.uid];
+            if (showLeadToggled && modInfo.isLead) {
+                badges.push('<span class="lead-badge">LEAD-MODERATOR</span>');
+                auraClass = 'lead-aura';
+            } else {
+                badges.push('<span class="mod-badge">MODERATOR</span>');
+                auraClass = 'mod-aura';
+            }
+        }
+
+        let badgesHTML = badges.length > 1 ? `<div class="badge-stack">${badges.join('')}</div>` : (badges[0] ? `<span style="margin-left:8px; vertical-align:middle;">${badges[0]}</span>` : '');
+
+        const modSecName = (isMod) ? `<div style="font-size:0.85em; color:#f1c40f; font-weight:bold; margin-bottom: 3px;">Title: ${moderatorsData[f.uid].alter}</div>` : '';
+        const secNameHtml = (f.new_name && f.new_name !== f.name) ? `<div style="font-size:0.85em; color:#bbb; font-weight:bold; margin-bottom: 3px;"> ${showAlterView ? f.name : f.new_name}</div>` : '';
+
+        // FIX DEL BUG AL GENERAR RANDOM DOMAINS CON EL STRING UID
+        let hash = 0;
+        for (let i = 0; i < f.uid.length; i++) {
+            hash += f.uid.charCodeAt(i);
+        }
+        const randomDomain = domains[hash % domains.length];
+
+        html += `
+        <div class="friendcard col-sm-12 col-md-6 col-lg-3 ${auraClass}">
+            <img class="friend-avatar" 
+                 src="avatar/${f.uid}.webp" 
+                 loading="lazy" 
+                 onerror="${fallBackImg}" 
+                 onclick="window.location.href='${profileUrl}'">
+            
+            <a href="${profileUrl}" class="friend-link">
+                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 50%;">${displayFname}</span>
+                ${badgesHTML}
+            </a>
+
+            <div class="friend-tooltip">
+                <div class="tt-name">${displayFname}</div>
+                ${modSecName}
+                ${secNameHtml}
+                <img class="tt-img" src="avatar/${f.uid}.webp" loading="lazy" onerror="${fallBackImg}">
+                <div class="tt-uid">uid=${f.uid}</div>
+            </div>
+        </div>`;
+    }); // FIX PRINCIPAL: Agregado el Cierre del forEach que generaba SyntaxError (missing ) after argument list)
+
+    if (currentIndex === 0) board.innerHTML = html;
+    else board.insertAdjacentHTML('beforeend', html);
+
+    currentIndex += itemsToShow;
+    
+    if (currentIndex < filteredData.length) {
+        if (!isAutoScrollActive) {
+            document.getElementById('load-more-btn').style.display = 'block';
+            document.getElementById('load-all-btn').style.display = 'block';
+        }
+    } else {
+        document.getElementById('load-more-btn').style.display = 'none';
+        document.getElementById('load-all-btn').style.display = 'none';
+        isAutoScrollActive = false;
+    }
+};
+
+// ============================================================================
+// 4. EVENTOS
+// ============================================================================
+document.getElementById('year-minus').onclick = () => { if (currentYearIndex > 0) { currentYearIndex--; document.getElementById('year-display').innerText = availableYears[currentYearIndex]; applyFilters(); } };
+document.getElementById('year-plus').onclick = () => { if (currentYearIndex < availableYears.length - 1) { currentYearIndex++; document.getElementById('year-display').innerText = availableYears[currentYearIndex]; applyFilters(); } };
+
+document.getElementById('load-more-btn').onclick = renderChunk;
+document.getElementById('load-all-btn').onclick = function() { isAutoScrollActive = true; this.style.display = 'none'; document.getElementById('load-more-btn').style.display = 'none'; renderChunk(); };
+
+window.onscroll = () => { if (isAutoScrollActive && (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) { if (currentIndex < filteredData.length) renderChunk(); } };
+
+document.getElementById('show-avatars-cb').onchange = function() { document.getElementById('friendscontainer').classList.toggle('show-avatars-mode', this.checked); };
+document.getElementById('expanded-view-cb').onchange = function() { if (this.checked) { document.getElementById('big-view-cb').checked = false; document.getElementById('friendscontainer').classList.remove('big-view-mode'); } document.getElementById('friendscontainer').classList.toggle('expanded-view-mode', this.checked); };
+document.getElementById('big-view-cb').onchange = function() { if (this.checked) { document.getElementById('expanded-view-cb').checked = false; document.getElementById('friendscontainer').classList.remove('expanded-view-mode'); } document.getElementById('friendscontainer').classList.toggle('big-view-mode', this.checked); };
+
+document.getElementById('show-moderators-cb').onchange = function() {
+    document.getElementById('show-lead-wrapper').style.display = this.checked ? 'inline-flex' : 'none';
+    if (!this.checked) document.getElementById('show-lead-cb').checked = false;
+
+    if (this.checked) {
+        document.getElementById('alter-names-cb').checked = false;
+    }
+
+    applyFilters();
+};
+document.getElementById('show-lead-cb').onchange = applyFilters;
+
+document.getElementById('alter-names-cb').onchange = function() {
+    if (this.checked) {
+        const modCb = document.getElementById('show-moderators-cb');
+        modCb.checked = false; 
+        document.getElementById('show-lead-wrapper').style.display = 'none';
+    }
+    applyFilters(); 
+};
+document.getElementById('has-hidden-cb').onchange = applyFilters;
+document.getElementById('da-search-method').onchange = applyFilters;
+document.getElementById('da-search-input').oninput = () => { clearTimeout(searchTimeout); searchTimeout = setTimeout(applyFilters, 250); };
+
+// NAVBAR SEARCH
+$(function() {
+    const input = $('#nav-search-input');
+    const resultsBox = $('#search-results-dropdown');
+    $('#search-clear-trash').on('click', () => { input.val('').focus(); resultsBox.hide(); });
+    input.on('input', function() {
+        const query = $(this).val().trim().toLowerCase();
+        if (query.length < 2) { resultsBox.hide(); return; }
+        const qAdv = advancedDecancer(query);
+        let matches =[];
+        for(let i=0; i<allData.length && matches.length < 8; i++) {
+            if (advancedCache[i].includes(qAdv) || allData[i].uid.toLowerCase().includes(query)) matches.push(allData[i]);
+        }
+        if (matches.length > 0) {
+            resultsBox.html(matches.map(p => `<div class="search-res-item" onclick="window.location.href='profile.html?uid=${p.uid}&search_name=${encodeURIComponent(p.name)}'"><img src="avatar/${p.uid}.webp" onerror="this.onerror=null;this.src='user.png';" style="width:28px; height:28px; border-radius:4px; margin-right:10px; object-fit:cover;"><div><div style="font-weight:bold; color:white;">${p.name}</div><div style="font-size:0.7em; color:#a0cfff;">UID: ${p.uid.substring(0,8)}...</div></div></div>`).join('')).show();
+        } else resultsBox.hide();
+    });
+    $(document).on('click', (e) => { if (!$(e.target).closest('.search-box-wrapper').length) resultsBox.hide(); });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Drawaria.online ▶ Friends Lite</title>
+    
+    <meta name="description" content="Explore thousands of indexed profiles, historical art archives and hidden secrets. Developed by YouTubeDrawaria.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="YouTubeDrawaria">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <script>
+        (function() {
+            var test = document.createElement('span');
+            test.className = 'fa';
+            test.style.display = 'none';
+            document.head.appendChild(test);
+            var isLoaded = window.getComputedStyle(test).fontFamily.indexOf('Font Awesome') !== -1;
+            if (!isLoaded) {
+                document.write('<link rel="stylesheet" href="all.css">');
+            }
+            test.remove();
+        })();
+    </script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script>
+        (function() {
+            var test = document.createElement('div');
+            test.className = 'hidden d-none';
+            document.head.appendChild(test);
+            var isLoaded = window.getComputedStyle(test).display === 'none';
+            if (!isLoaded) {
+                document.write('<link rel="stylesheet" href="boostrap-style.css">');
+            }
+            test.remove();
+        })();
+    </script>
+
+    <link rel="stylesheet" href="primary.css">
+    <link rel="stylesheet" href="avataranimations.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="jquery.min.js"><\/script>')</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script>window.Popper || document.write('<script src="popper.min.js"><\/script>')</script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script>if(typeof($.fn.modal) === 'undefined') { document.write('<script src="bootstrap.min.js"><\/script>'); }</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    
+	
+    <meta name="image" content="siteimage.jpg">
+    
+    <!-- ES Modules con Headers CORS Compatibles para evitar errores locales -->
+    <script type="module">
+        import { rectifyConfusion } from 'https://esm.sh/unicode-confusables@1.1.2';
+        import uFuzzy from 'https://esm.sh/@leeoniya/ufuzzy@1.0.14';
+
+        window.OSINT_ENGINE = {
+            rectify: rectifyConfusion,
+            ufuzzy: new uFuzzy({
+                intraMode: 1, intraIns: 1, intraSub: 1, intraTrn: 1, intraDel: 1
+            })
+        };
+    </script>
+
+    <style>
+        /* =========================================
+           SISTEMA DE WORKER KAWAII (LITE)
+           ========================================= */
+        #setup-view {
+          display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+          background: url('pattern.png') repeat center, radial-gradient(circle, rgba(0, 90, 187, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%);
+          z-index: 1000000; flex-direction: column; justify-content: center; align-items: center; font-family: 'Comic Sans MS', sans-serif;
+        }
+        .setup-card { background: #FDFDFD; border: 6px solid #8B5A2B; border-radius: 35px; padding: 30px; width: 90%; max-width: 520px; text-align: center; box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.15); }
+        .worker-image-container { margin: 10px auto 20px auto; display: flex; justify-content: center; align-items: center; }
+        .worker-img { max-width: 100%; height: auto; display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); }
+        .setup-title { font-size: 24px; font-weight: 900; color: #FF9800; margin-bottom: 15px; -webkit-text-stroke: 1.5px #8B5A2B; text-transform: uppercase; }
+        .system-desc { color: #555; font-size: 13px; margin: 5px 0 20px 0; font-family: sans-serif; }
+        .progress-container { background: #EEE; border: 3px solid #8B5A2B; border-radius: 50px; height: 28px; overflow: hidden; margin-bottom: 10px; }
+        #progress-fill { background: #00BCD4; width: 0%; height: 100%; color: white; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: width 0.4s ease; }
+        #status-text { font-weight: bold; color: #8B5A2B; font-size: 14px; margin-bottom: 20px; font-family: sans-serif;}
+        #btn-worker { background: #FF9800; color: white; border: 4px solid #8B5A2B; padding: 12px 35px; border-radius: 50px; cursor: pointer; font-weight: 900; font-size: 16px; transition: 0.2s; box-shadow: 0 5px 0px #8B5A2B; }
+        #btn-worker:hover { background: #FFA726; transform: translateY(-2px); box-shadow: 0 7px 0px #8B5A2B; }
+        #btn-worker:active { transform: translateY(3px); box-shadow: 0 2px 0px #8B5A2B; }
+
+        /* NAVBAR Y BUSQUEDA */
+        .sitemenu .nav-link { color: #ffffff !important; }
+        .search-box-wrapper { display: inline-flex; align-items: center; position: relative; width: 100%; max-width: 400px; }
+        #nav-search-input { width: 100%; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 5px 35px 5px 15px; color: white; font-size: 0.9em; outline: none; transition: all 0.2s; }
+        #nav-search-input:focus { background: rgba(255, 255, 255, 0.25); border-color: #00BCD4; box-shadow: 0 0 5px rgba(0, 188, 212, 0.5); }
+        .search-lupa { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.6); pointer-events: none; }
+        #search-clear-trash { margin-left: 10px; color: #a0cfff; cursor: pointer; font-size: 1.1em; transition: color 0.2s; }
+        #search-results-dropdown { position: absolute; top: 100%; left: 0; width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 5px; z-index: 10000; max-height: 250px; overflow-y: auto; display: none; text-align: left; margin-top: 5px;}
+        .search-res-item { padding: 8px 12px; border-bottom: 1px solid #222; cursor: pointer; display: flex; align-items: center; color: #ccc; }
+        .search-res-item:hover { background: #252525; color: white; }
+
+        /* UID LINKS Y CABECERA */
+        .uidlinks, .uidlinks > a { color: #a0cfff; font-size: 0.8em; padding: 0 0.2em; text-decoration: none; }
+        .uidlinks > a:hover, .uidlinks-active { color: #ffffff !important; }
+        #headermenu { position: absolute; float: right; top: -0.1em; right: -0.09em; }
+
+        /* PANELES DE CONTROLES DE AMIGOS */
+        .friends-controls-wrapper { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        #da-search-method, #da-search-input { background: rgba(0, 0, 0, 0.6); color: #fff; border: 1px solid #a0cfff; border-radius: 4px; padding: 5px 10px; font-size: 14px; outline: none; }
+        .show-avatars-label { color: white; font-weight: bold; display: flex; align-items: center; gap: 8px; cursor: pointer; background: transparent; font-size: 16px; transition: opacity 0.3s ease; }
+        .show-avatars-label input[type="checkbox"] { transform: scale(1.3); cursor: pointer; }
+        .show-avatars-label i { color: #a0cfff; }
+
+        /* GRID AMIGOS */
+        #friendscontainer > .row { background: #1f88f7; border-radius: 3px; padding: 10px; display: flex; flex-wrap: wrap; justify-content: center; }
+        .friendcard { background: #00b7ff; border-radius: 3px; margin: 0.5em; padding: 0; color: #ffffff; height: 3em; position: relative; display: flex; align-items: center; transition: all 0.2s ease; }
+        .friendcard a.friend-link { color: #ffffff; width: 100%; text-align: center; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 10px; font-weight: 500; }
+        .friendcard a.friend-link:hover { text-decoration: underline; }
+        .friendcard img.friend-avatar { display: none; width: 3em; height: 3em; border-radius: 3px; cursor: pointer; position: absolute; left: 0; top: 0; object-fit: cover;}
+        
+        .show-avatars-mode .friendcard a.friend-link { text-align: left; width: calc(100% - 3.5em); left: 3.5em; position: absolute; line-height: 3em; }
+        .show-avatars-mode .friendcard img.friend-avatar { display: block; }
+
+        /* TOOLTIPS */
+        .friend-tooltip { display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 10px; border-radius: 8px; border: 1px solid #ccc; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; z-index: 1000; min-width: 160px; pointer-events: none; }
+        .friend-tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; margin-left: -10px; border-width: 10px; border-style: solid; border-color: white transparent transparent transparent; }
+        .friend-tooltip::before { content: ''; position: absolute; top: 100%; left: 50%; margin-left: -11px; border-width: 11px; border-style: solid; border-color: #ccc transparent transparent transparent; z-index: -1; }
+        .friend-tooltip .tt-name { font-weight: 900; margin-bottom: 5px; font-size: 14px; color: #333; }
+        .friend-tooltip .tt-img { width: 50px; height: 50px; border-radius: 4px; background: #eee; margin-bottom: 5px; object-fit: cover; border: 1px solid #ccc; }
+        .friend-tooltip .tt-uid { font-size: 10px; color: #666; font-family: monospace; word-break: break-all; }
+        
+        .friendcard:hover .friend-tooltip { display: block; }
+        .show-avatars-mode .friendcard:hover .friend-tooltip { display: none; }
+
+        .altered-badge {
+            background: #ff5252; color: white; padding: 2px 6px; 
+            border-radius: 10px; font-size: 10px; font-weight: bold; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        /* VISTAS EXPANDIDAS Y BIG VIEW */
+        .expanded-view-mode .friendcard { flex: 0 0 auto !important; max-width: none !important; width: auto !important; padding: 0 15px; min-width: 140px; }
+        .expanded-view-mode .friendcard a.friend-link { width: auto; padding: 0; position: relative; }
+        .expanded-view-mode.show-avatars-mode .friendcard { padding-left: 3.5em; }
+        .expanded-view-mode.show-avatars-mode .friendcard a.friend-link { left: 0; }
+        .expanded-view-mode .friendcard:hover .friend-tooltip { display: block !important; }
+        
+        .big-view-mode #friendscontainer > .row { padding: 5px !important; gap: 1px; align-content: flex-start; }
+        .big-view-mode .friendcard { flex: 0 0 auto !important; max-width: none !important; width: 3em !important; height: 3em !important; margin: 0 !important; padding: 0 !important; background: transparent !important; border-radius: 0 !important; }
+        .big-view-mode .friendcard a.friend-link { display: none !important; }
+        .big-view-mode .friendcard img.friend-avatar { display: block !important; position: relative !important; left: auto !important; top: auto !important; width: 100% !important; height: 100% !important; border-radius: 0 !important; }
+        .big-view-mode .friendcard:hover .friend-tooltip { display: block !important; }
+    </style>
+</head>
+
+<body>
+
+<!-- Kawaii DB Installer Backup (Display = none por defecto) -->
+<div id="setup-view" style="display: none;">
+    <div class="setup-card">
+        <h2 class="setup-title">Full Database Missing</h2>
+        <div class="worker-image-container">
+            <img src="august-guy.png" alt="Worker" class="worker-img">
+        </div>
+        <p class="system-desc">Local Database not detected. We need to process social relationships and deep forensics stats.</p>
+        <div class="progress-container"><div id="progress-fill">0%</div></div>
+        <p id="status-text">Ready to extract...</p>
+        <button id="btn-worker">INSTALL DATABASE</button>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top sitemenu" style="background: #00000059; box-shadow: 0 5px 9px 0px rgba(0,0,0,0.5);">
+    <a class="navbar-brand" href="search.html"><img src="wiki2.png" width="246" height="30" style="margin-bottom: 5px;" ></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item"><a class="nav-link" href="scoreboards.html">Scoreboards</a></li>
+            <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+        </ul>
+        <div class="row no-gutters" style="display: flex; flex-wrap: wrap; flex: 1;">
+            <div class="col" style="text-align: center;">
+                <div class="search-box-wrapper">
+                    <div style="position: relative; width: 100%;">
+                        <input type="text" id="nav-search-input" placeholder="Search Name or UID..." autocomplete="off">
+                        <i class="fas fa-search search-lupa"></i>
+                        <div id="search-results-dropdown"></div>
+                    </div>
+                    <i class="fas fa-trash-alt" id="search-clear-trash" title="Clear search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div style="margin-top: 6em;"></div>
+
+<div class="container" style="margin-bottom: 0; color:#000000;">
+    <div style="padding: 2px; background: #005abb6e;" id="dynamic-profile-header"></div>
+</div>
+
+<div class="container">
+    <div class="friends-controls-wrapper">
+        <select id="da-search-method">
+            <option value="name" selected> Search Name</option>
+            <option value="uid"> Search by UID</option>
+        </select>
+        
+        <input type="text" id="da-search-input" placeholder="&#xf002; Search friend..." autocomplete="off" style="font-family: 'Font Awesome 5 Free', sans-serif; font-weight: 900;">
+        
+        <label class="show-avatars-label">
+            <input type="checkbox" id="show-avatars-cb"> 
+            <i class="fas fa-images"></i> show avatars
+        </label>
+
+        <label class="show-avatars-label" id="alter-names-wrapper" style="display: none;">
+            <input type="checkbox" id="alter-names-cb"> 
+            <i class="fas fa-exchange-alt" style="color:#a0cfff;"></i> alter names
+        </label>
+
+        <label class="show-avatars-label" id="expanded-view-wrapper">
+            <input type="checkbox" id="expanded-view-cb"> 
+            <i class="fas fa-list" style="color:#a0cfff;"></i> expanded view
+        </label>
+
+        <label class="show-avatars-label" id="big-view-wrapper">
+            <input type="checkbox" id="big-view-cb"> 
+            <i class="fas fa-th" style="color:#a0cfff;"></i> big view
+        </label>
+    </div>
+</div>
+
+<div class="container" id="friendscontainer">
+    <div class="row justify-content-center no-gutters" id="friends-list-wrapper">
+        <div style="color: white; padding: 20px;">Loading friends list...</div>
+    </div>
+</div>
+
+<script>
+// ============================================================================
+// INICIALIZACIÓN ESTRICTA Y DB (Solo muestra DB Installer si está vacía)
+// ============================================================================
+let localDB; 
+
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetUid = urlParams.get('uid');
+    if (!targetUid) {
+        document.getElementById('friends-list-wrapper').innerHTML = '<div style="color:white; padding:20px;">No UID provided.</div>';
+        return;
+    }
+
+    const checkDB = indexedDB.open("DrawariaLiteDB", 2);
+    
+    checkDB.onupgradeneeded = e => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains("profiles")) db.createObjectStore("profiles", { keyPath: "uid" });
+        if (!db.objectStoreNames.contains("social")) db.createObjectStore("social", { keyPath: "owner_uid" });
+        if (!db.objectStoreNames.contains("sigint_tags")) db.createObjectStore("sigint_tags", { keyPath: "word" });
+    };
+    
+    checkDB.onsuccess = e => {
+        localDB = e.target.result;
+        if (!localDB.objectStoreNames.contains('profiles')) {
+            document.getElementById('setup-view').style.display = 'flex';
+            return;
+        }
+        
+        const transaction = localDB.transaction(['profiles'], 'readonly');
+        const store = transaction.objectStore('profiles');
+        const countReq = store.count();
+
+        countReq.onsuccess = () => {
+            if (countReq.result === 0) {
+                document.getElementById('setup-view').style.display = 'flex';
+            } else {
+                initFriendsPage(targetUid);
+            }
+        };
+    };
+});
+
+/* LÓGICA DEL WORKER DE IMPORTACIÓN */
+const workerCode = `
+self.onmessage = async function(e) {
+    const { profiles, social } = e.data;
+    const DB_NAME = "DrawariaLiteDB";
+    const request = indexedDB.open(DB_NAME, 2);
+    request.onsuccess = function(event) {
+        const db = event.target.result;
+        const pTx = db.transaction("profiles", "readwrite");
+        const pStore = pTx.objectStore("profiles");
+        profiles.forEach((p, i) => {
+            pStore.put(p);
+            if (i % 2000 === 0) self.postMessage({ status: "Profiles: " + Math.round((i/profiles.length)*100) + "%" });
+        });
+        pTx.oncomplete = () => {
+            const sTx = db.transaction("social", "readwrite");
+            const sStore = sTx.objectStore("social");
+            social.forEach((s, i) => {
+                sStore.put(s);
+                if (i % 2000 === 0) self.postMessage({ status: "Social: " + Math.round((i/social.length)*100) + "%" });
+            });
+            sTx.oncomplete = () => {
+                db.close();
+                self.postMessage({ status: "All complete!", complete: true });
+            };
+        };
+    };
+};`;
+
+document.getElementById('btn-worker').onclick = async function() {
+    const btn = this; const status = document.getElementById('status-text'); const fill = document.getElementById('progress-fill');
+    btn.disabled = true;
+    const loadScript = (src) => new Promise(res => { const s = document.createElement('script'); s.src = src; s.onload = res; document.head.appendChild(s); });
+    try {
+        status.innerText = "Downloading chunks..."; fill.style.width = "15%"; fill.innerText = "15%";
+        await loadScript('relational_profiles_v5.js'); fill.style.width = "35%"; fill.innerText = "35%";
+        await loadScript('relational_social_v5.js'); fill.style.width = "50%"; fill.innerText = "50%";
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        const workerUrl = URL.createObjectURL(blob);
+        const worker = new Worker(workerUrl);
+        worker.postMessage({ profiles: window.relationalProfiles, social: window.relationalSocialMaps });
+        worker.onmessage = (e) => {
+            if (e.data.complete) { 
+                fill.style.width = "100%"; fill.innerText = "100%"; 
+                status.innerText = "Success! Reloading..."; setTimeout(() => location.reload(), 1200); 
+            } else { 
+                const match = e.data.status.match(/(\d+)%/); 
+                if (match) {
+                    let p = 50 + (parseInt(match[1]) / 2);
+                    fill.style.width = p + "%"; fill.innerText = Math.round(p) + "%";
+                }
+                status.innerText = e.data.status; 
+            }
+        };
+    } catch (err) { status.innerText = "Error: " + err.message; btn.disabled = false; }
+};
+
+// ============================================================================
+// UTILIDADES LIGERAS
+// ============================================================================
+const gamerMap = {
+    '卂':'a', 'Ꮨ':'a', 'Λ':'a', 'α':'a', 'Δ':'a', '丹':'a', 'ᗅ':'a', 'ᕱ':'a', 'ᴀ':'a', 'Α':'a', 'а':'a', 'А':'a', '@':'a', '4':'a',
+    '乃':'b', '𐌁':'b', 'β':'b', 'ʙ':'b', 'Β':'b', 'б':'b', 'Б':'b', 'в':'v', 'В':'v', '8':'b',
+    '匚':'c', '૮':'c', 'ċ':'c', '𝗰':'c', 'ꮯ':'c', 'ƈ':'c', 'с':'c', 'С':'c', '©':'c', '¢':'c',
+    '刀':'d', 'ⅅ':'d', 'ᴅ':'d', 'ꭰ':'d', 'δ':'d', 'д':'d', 'Д':'d',
+    '乇':'e', 'ᴇ':'e', 'ꍟ':'e', 'ε':'e', 'Ε':'e', 'ҽ':'e', 'е':'e', 'Е':'e', 'ё':'e', 'Ё':'e', 'э':'e', 'Э':'e', 'є':'e', '3':'e',
+    '下':'f', 'ғ':'f', 'Φ':'f', 'φ':'f', 'ф':'f', 'Ф':'f',
+    '彑':'g', 'ɢ':'g', 'Γ':'g', 'γ':'g', 'г':'g', 'Г':'g', 'Ĝ':'g', '9':'g',
+    '卄':'h', 'ʜ':'h', 'ꃅ':'h', 'Η':'h', 'ɧ':'h', 'ħ':'h', 'ԋ':'h', 'х':'h', 'Х':'h', 'н':'h', 'Н':'h',
+    'Ĩ':'i', 'ɪ':'i', 'Ι':'i', 'ί':'i', 'ι':'i', 'í':'i', 'ì':'i', 'и':'i', 'И':'i', '¡':'i', '!':'i', '1':'i', 'ı':'i', 'Í':'i',
+    '丁':'j', 'ᴊ':'j', 'й':'j', 'Й':'j',
+    'ᴋ':'k', 'κ':'k', 'Κ':'k', 'к':'k', 'К':'k',
+    '乚':'l', 'ʟ':'l', 'λ':'l', 'л':'l', 'Л':'l', 'ĺ':'l', 'ļ':'l', 'ľ':'l', 'ł':'l',
+    '爪':'m', 'ᴍ':'m', 'Μ':'m', 'μ':'m', 'ო':'m', 'м':'m', 'М':'m',
+    'ɴ':'n', 'Ŋ':'n', 'Ν':'n', 'ν':'n', 'ñ':'n', 'ń':'n', 'ņ':'n', 'ň':'n', 'п':'n', 'П':'n',
+    '〇':'o', 'ᴏ':'o', 'ο':'o', 'Ο':'o', 'о':'o', 'О':'o', 'ø':'o', 'ö':'o', 'ó':'o', 'ò':'o', 'ô':'o', 'õ':'o', '0':'o',
+    '尸':'p', 'ᴘ':'p', 'ρ':'p', 'Ρ':'p', 'п':'p', 'П':'p', 'р':'p', 'Р':'p',
+    'ǫ':'q',
+    '尺':'r', 'ʀ':'r', 'ɽ':'r', 'ř':'r', 'ŕ':'r', 'ŗ':'r', '®':'r',
+    '丂':'s', 'ѕ':'s', 'ς':'s', 'ʂ':'s', 'ꑄ':'s', 'ŝ':'s', 'Ꮥ':'s', 'Σ':'s', 'σ':'s', 'с':'s', 'С':'s', '$':'s', '§':'s', 'š':'s', 'ş':'s', 'ś':'s', '5':'s',
+    'ㄒ':'t', 'ᴛ':'t', 'τ':'t', 'ţ':'t', 'ʈ':'t', 'Ϯ':'t', 'Τ':'t', 'т':'t', 'Т':'t', 'ț':'t', 'ť':'t', 'ŧ':'t', '†':'t', '7':'t',
+    'ᴜ':'u', 'υ':'u', 'Υ':'u', 'у':'u', 'У':'u', 'ú':'u', 'ù':'u', 'û':'u', 'ü':'u', 'ů':'u', 'ű':'u', 'ų':'u',
+    'ᴠ':'v', 'в':'v', 'В':'v',
+    'ᴡ':'w', 'ω':'w', 'Ω':'w', 'ш':'w', 'Ш':'w', 'щ':'w', 'Щ':'w',
+    '乂':'x', 'χ':'x', 'ξ':'x', 'Χ':'x', 'Ξ':'x', 'х':'x', 'Х':'x', '×':'x',
+    'ʏ':'y', 'ყ':'y', 'Υ':'y', 'υ':'y', 'ý':'y', 'ÿ':'y', 'ŷ':'y', 'у':'y', 'У':'y',
+    '乙':'z', 'ᴢ':'z', 'ζ':'z', 'Ζ':'z', 'з':'z', 'З':'z', 'ž':'z', 'ż':'z', 'ź':'z', '2':'z',
+    'â':'a', 'æ':'ae', 'œ':'oe'
+};
+
+function advancedDecancer(str) {
+    if (!str) return "";
+    let result = "";
+    for (let char of str) {
+        let code = char.codePointAt(0);
+        if (code >= 0xFF21 && code <= 0xFF3A) { result += String.fromCodePoint(code - 0xFEE0); continue; }
+        if (code >= 0xFF41 && code <= 0xFF5A) { result += String.fromCodePoint(code - 0xFEE0); continue; }
+        if (code >= 0x24B6 && code <= 0x24CF) { result += String.fromCodePoint(code - 0x24B6 + 65); continue; }
+        if (code >= 0x24D0 && code <= 0x24E9) { result += String.fromCodePoint(code - 0x24D0 + 97); continue; }
+        if (code >= 0x1F150 && code <= 0x1F169) { result += String.fromCodePoint(code - 0x1F150 + 65); continue; }
+        if (code >= 0x1F130 && code <= 0x1F149) { result += String.fromCodePoint(code - 0x1F130 + 65); continue; }
+        if (code >= 0x1F170 && code <= 0x1F189) { result += String.fromCodePoint(code - 0x1F170 + 65); continue; }
+        result += char;
+    }
+    result = result.normalize("NFKD");
+    let translated = "";
+    for (let c of result) { translated += gamerMap[c] || c; }
+    return translated.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/gi, '').toLowerCase();
+}
+
+function extractUid(f) {
+    if (!f) return "";
+    if (typeof f === 'string') return f;
+    if (Array.isArray(f)) return f[0] || "";
+    if (typeof f === 'object') return f.uid || f.id || "";
+    return String(f);
+}
+
+function extractName(f) {
+    if (!f) return "Unknown";
+    if (typeof f === 'string') return "Unknown";
+    if (Array.isArray(f)) return f[1] || f[0] || "Unknown";
+    if (typeof f === 'object') return f.name || f.username || f.uid || "Unknown";
+    return String(f);
+}
+
+function extractNewName(f) {
+    if (!f) return null;
+    if (typeof f === 'object') return f.new_name || null;
+    return null;
+}
+
+let globalFriendsList =[]; 
+let currentFilteredList = [];
+let advancedCache =[]; 
+let searchTimeout;
+let showAlterNames = false;
+
+// ============================================================================
+// MAIN PAGE INIT
+// ============================================================================
+function initFriendsPage(targetUid) {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Header Data
+    try {
+        const getProfile = localDB.transaction("profiles", "readonly").objectStore("profiles").get(targetUid);
+        getProfile.onsuccess = () => {
+            const profile = getProfile.result;
+            if (profile) {
+                window.currentPlayerProfile = profile; 
+
+                const searchedName = urlParams.get('search_name');
+                let defaultDisplay = profile.name || "Unknown";
+                
+                if (searchedName && (searchedName === profile.new_name || searchedName === profile.name)) {
+                    defaultDisplay = searchedName;
+                } else if (profile.new_name) {
+                    defaultDisplay = profile.new_name;
+                }
+                
+                window.currentPlayerName = defaultDisplay;
+
+                const hasDualIdentity = profile.new_name && profile.name && (profile.new_name !== profile.name);
+                const alterUsernameBtnHTML = hasDualIdentity ? 
+                `<a class="dropdown-item" id="menu-alter-username" href="#" style="font-weight:normal; padding: .25rem 1.5rem; font-size:0.9em;"><i class="fas fa-exchange-alt" style="color:#6c757d!important;"></i><span style="color:#212529!important;">  Alter Username</span></a>` : "";
+
+                document.getElementById('dynamic-profile-header').innerHTML = `
+                    <h1 style="text-align: center; color: white; margin: 0; background: #ffffff52; padding: 10px; border-radius: 3px;">
+                        <div style="position: relative;">
+                            <a href="profile.html?uid=${profile.uid}" style="color: #ffffff; text-decoration:none;">
+                                <img class="turnresults-avatar" src="avatar/${profile.uid}.webp" style="padding: 1px; box-shadow: 0px 0 3px 0px #3F51B5;" onerror="this.src='wiki.png';"><span id="header-display-name">${defaultDisplay}</span>
+                            </a>
+                            <div class="dropdown dropleft" id="headermenu">
+                                <button class="btn btn-outline-light btn-sm" type="button" data-toggle="dropdown" style="opacity: 0.7;">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                  <a class="dropdown-item" id="copy-uid-btn" href="#">Copy User ID</a>
+                                  ${alterUsernameBtnHTML}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uidlinks mt-2">
+                            <a href="profile.html?uid=${profile.uid}">Profile</a>
+                            <a href="friends.html?uid=${profile.uid}" class="uidlinks-active">Friends</a>
+			    <a href="Search.html" target="_blank">Search</a>
+                        </div>
+                    </h1>
+                `;
+            }
+        };
+    } catch (err) { }
+
+    // Friends Data
+    try {
+        const getSocial = localDB.transaction("social", "readonly").objectStore("social").get(targetUid);
+        getSocial.onsuccess = () => {
+            const socialData = getSocial.result;
+            globalFriendsList = (socialData && socialData.friends) ? socialData.friends.map(f => ({
+                uid: extractUid(f),
+                name: extractName(f),
+                new_name: extractNewName(f)
+            })) :[];
+            
+            renderFriendsList(globalFriendsList);
+        };
+    } catch (err) { 
+        renderFriendsList([]);
+    }
+}
+
+// ============================================================================
+// RENDER Y FILTRADO
+// ============================================================================
+function renderFriendsList(listaAmigos) {
+    currentFilteredList = listaAmigos; 
+    const wrapper = document.getElementById('friends-list-wrapper');
+    if (listaAmigos.length === 0) {
+        wrapper.innerHTML = '<div style="color:white; padding: 20px;">No results found.</div>';
+        return;
+    }
+
+    let html = '';
+    const fallBackImg = "this.onerror=null;this.src='wiki.png';"; // Fallback to root wiki logo
+
+    listaAmigos.forEach(f => {
+        const fUid = f.uid;
+        const isAltered = showAlterNames && f.new_name && (f.new_name !== f.name);
+        const displayFname = isAltered ? f.new_name : f.name;
+        
+        const badgeAltered = isAltered ? `<span class="altered-badge">ALTERED</span>` : '';
+        const finalBadgesHTML = badgeAltered ? `<span style="margin-left:8px; vertical-align:middle;">${badgeAltered}</span>` : '';
+
+        const secNameHtml = (f.new_name && f.new_name !== f.name) ? `<div style="font-size:0.8em; color:#333; font-weight:bold; margin-bottom: 2px;"> ${showAlterNames ? f.name : f.new_name}</div>` : '';
+        const profileUrl = `profile.html?uid=${fUid}&search_name=${encodeURIComponent(displayFname)}`;
+
+        html += `
+        <div class="friendcard col-sm-12 col-md-6 col-lg-3">
+            <img class="friend-avatar" src="avatar/${fUid}.webp" loading="lazy" onerror="${fallBackImg}" onclick="window.location.href='${profileUrl}'">
+            <a href="${profileUrl}" class="friend-link" style="display: flex; align-items: center; justify-content: center;">
+                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65%;">${displayFname}</span>
+                ${finalBadgesHTML}
+            </a>
+            
+            <div class="friend-tooltip">
+                <div class="tt-name">${displayFname}</div>
+                ${secNameHtml}
+                <img class="tt-img" src="avatar/${fUid}.webp" loading="lazy" onerror="${fallBackImg}">
+                <div class="tt-uid">uid=${fUid}</div>
+            </div>
+        </div>`;
+    });
+    wrapper.innerHTML = html;
+    
+    updateAlterNamesVisibility();
+}
+
+function updateAlterNamesVisibility() {
+    const alterWrapper = document.getElementById('alter-names-wrapper');
+    if (!alterWrapper) return;
+    const hasNewNames = globalFriendsList.some(f => f.new_name && f.new_name !== f.name);
+    alterWrapper.style.display = hasNewNames ? 'flex' : 'none';
+}
+
+// TOGGLES
+document.getElementById('show-avatars-cb').addEventListener('change', function() {
+    document.getElementById('friendscontainer').classList.toggle('show-avatars-mode', this.checked);
+});
+
+document.getElementById('alter-names-cb').addEventListener('change', function() {
+    showAlterNames = this.checked;
+    renderFriendsList(currentFilteredList);
+});
+
+document.getElementById('expanded-view-cb').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('big-view-cb').checked = false;
+        document.getElementById('friendscontainer').classList.remove('big-view-mode');
+    }
+    document.getElementById('friendscontainer').classList.toggle('expanded-view-mode', this.checked);
+});
+
+document.getElementById('big-view-cb').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('expanded-view-cb').checked = false;
+        document.getElementById('friendscontainer').classList.remove('expanded-view-mode');
+    }
+    document.getElementById('friendscontainer').classList.toggle('big-view-mode', this.checked);
+});
+
+// SEARCH INPUT
+document.getElementById('da-search-input').addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    const rawQuery = this.value.trim(); 
+    const method = document.getElementById('da-search-method').value;
+
+    if (rawQuery === '') {
+        renderFriendsList(globalFriendsList);
+        return;
+    }
+
+    searchTimeout = setTimeout(() => {
+        if (method === 'name') {
+            const queryAdv = advancedDecancer(rawQuery);
+            if (advancedCache.length !== globalFriendsList.length) {
+                advancedCache = globalFriendsList.map(f => advancedDecancer(f.name + " " + (f.new_name || "")));
+            }
+
+            if (window.OSINT_ENGINE && window.OSINT_ENGINE.ufuzzy) {
+                let idxs = window.OSINT_ENGINE.ufuzzy.filter(advancedCache, queryAdv);
+                let result =[];
+                if (idxs && idxs.length > 0) {
+                    for (let i = 0; i < idxs.length; i++) { result.push(globalFriendsList[idxs[i]]); }
+                }
+                renderFriendsList(result);
+            } else {
+                const filteredList = globalFriendsList.filter((f, i) => advancedCache[i].includes(queryAdv));
+                renderFriendsList(filteredList);
+            }
+        } else if (method === 'uid') {
+            const queryClean = rawQuery.toLowerCase();
+            const filteredList = globalFriendsList.filter(f => f.uid.toLowerCase().includes(queryClean));
+            renderFriendsList(filteredList);
+        }
+    }, 250); 
+});
+
+document.getElementById('da-search-method').addEventListener('change', function() {
+    advancedCache =[]; 
+    document.getElementById('da-search-input').dispatchEvent(new Event('input'));
+});
+
+// CLICKS MENUS Y ACCIONES
+document.addEventListener('click', function(e) {
+    const targetId = e.target.id || e.target.parentElement?.id;
+    
+    if (targetId === 'copy-uid-btn') {
+        e.preventDefault();
+        const uid = new URLSearchParams(window.location.search).get('uid');
+        if (uid) {
+            navigator.clipboard.writeText(uid).then(() => {
+                const originalText = e.target.innerText;
+                e.target.innerText = " Copied!";
+                e.target.style.color = "#4CAF50";
+                setTimeout(() => { e.target.innerText = originalText; e.target.style.color = ""; }, 1000);
+            });
+        }
+        return;
+    }
+    
+    if (targetId === 'menu-alter-username' || e.target.closest('#menu-alter-username')) {
+        e.preventDefault();
+        const p = window.currentPlayerProfile;
+        if (!p || !p.new_name) return;
+        
+        const nameSpan = document.getElementById('header-display-name');
+        const currentText = nameSpan.innerText;
+        const nextText = (currentText === p.new_name) ? p.name : p.new_name;
+        
+        nameSpan.style.opacity = 0;
+        setTimeout(() => {
+            nameSpan.innerText = nextText;
+            window.currentPlayerName = nextText; 
+            nameSpan.style.opacity = 1;
+            nameSpan.style.transition = "opacity 0.3s ease";
+        }, 150);
+        return;
+    }
+});
+
+// NAVBAR SEARCH (GLOBAL)
+$(function() {
+    const input = $('#nav-search-input');
+    const resultsBox = $('#search-results-dropdown');
+    
+    $('#search-clear-trash').on('click', function() {
+        input.val('').focus();
+        resultsBox.hide();
+    });
+
+    input.on('input', function() {
+        const query = $(this).val().trim().toLowerCase();
+        if (query.length < 2) { resultsBox.hide(); return; }
+
+        if (!localDB) {
+            indexedDB.open("DrawariaLiteDB", 2).onsuccess = (e) => {
+                localDB = e.target.result;
+                executeNavSearch(query, resultsBox);
+            };
+        } else {
+            executeNavSearch(query, resultsBox);
+        }
+    });
+
+    function executeNavSearch(query, resBox) {
+        const matches = [];
+        const store = localDB.transaction("profiles", "readonly").objectStore("profiles");
+
+        store.openCursor().onsuccess = (ev) => {
+            const c = ev.target.result;
+            if (c && matches.length < 8) {
+                const p = c.value;
+                const oldNameMatch = p.name && p.name.toLowerCase().includes(query);
+                const newNameMatch = p.new_name && p.new_name.toLowerCase().includes(query);
+                const uidMatch = p.uid && p.uid.toLowerCase().includes(query);
+                
+                if (oldNameMatch || newNameMatch || uidMatch) {
+                    let display_name = p.new_name || p.name || "Unknown";
+                    let secondary_name = (p.new_name && p.name !== p.new_name) ? p.name : "";
+                    matches.push({ ...p, display_name: display_name, secondary_name: secondary_name });
+                }
+                c.continue();
+            } else {
+                if (matches.length > 0) {
+                    resBox.html(matches.map(p => {
+                        const rDom = getDomain(p.uid);
+                        return `
+                        <div class="search-res-item" onclick="window.location.href='profile.html?uid=${p.uid}&search_name=${encodeURIComponent(p.display_name)}'">
+                            <img src="${rDom}/avatar/${p.uid}.webp" onerror="this.onerror=null;this.src='wiki.png';" style="width:28px; height:28px; border-radius:4px; margin-right:10px; border:1px solid #3F51B5; object-fit:cover;">
+                            <div>
+                                <div style="font-weight:bold; color:white;">${p.display_name}</div>
+                                ${p.secondary_name ? `<div style="font-size:0.7em; color:#ff9800;">AKA: ${p.secondary_name}</div>` : ''}
+                                <div style="font-size:0.7em; color:#a0cfff;">UID: ${p.uid.substring(0,8)}...</div>
+                            </div>
+                        </div>`;
+                    }).join('')).show();
+                } else {
+                    resBox.hide();
+                }
+            }
+        };
+    }
+
+    $(document).on('click', (e) => {
+        if (!$(e.target).closest('.search-box-wrapper').length) resultsBox.hide();
+    });
+});
+</script>
+
+</body>
+</html>
